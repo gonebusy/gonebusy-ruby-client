@@ -1,4 +1,4 @@
-gonebusy-ruby-sdk
+gonebusy-ruby-client
 =================
 
-A Ruby SDK for access to the GoneBusy API
+A Ruby client for access to the GoneBusy API
