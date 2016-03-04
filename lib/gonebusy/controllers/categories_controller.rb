@@ -1,4 +1,4 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 01/05/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
 
 module Gonebusy
   class CategoriesController
@@ -37,7 +37,9 @@ module Gonebusy
       response = Unirest.get query_url, headers:headers
 
       # Error handling using HTTP status codes
-      if response.code == 401
+      if response.code == 400
+        raise APIException.new "Bad Request", 400, response.raw_body
+      elsif response.code == 401
         raise APIException.new "Unauthorized/Missing Token", 401, response.raw_body
       elsif response.code == 403
         raise APIException.new "Forbidden", 403, response.raw_body

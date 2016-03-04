@@ -1,4 +1,4 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 01/05/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
 
 module Gonebusy
   class UpdateResourceByIdBody
@@ -24,6 +24,10 @@ module Gonebusy
     # @return [String]
     attr_accessor :gender
 
+    # When Resource is a Thing, the type Id
+    # @return [Numeric]
+    attr_accessor :thing_type_id
+
     
     def method_missing (method_name)
       puts "there's no method called '#{method_name}'"
@@ -43,6 +47,7 @@ module Gonebusy
       hash['description'] = self.description
       hash['capacity'] = self.capacity
       hash['gender'] = self.gender
+      hash['thing_type_id'] = self.thing_type_id
       hash
     end
 

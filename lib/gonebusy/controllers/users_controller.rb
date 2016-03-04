@@ -1,4 +1,4 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 01/05/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
 
 module Gonebusy
   class UsersController
