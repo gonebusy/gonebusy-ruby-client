@@ -1,8 +1,7 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class CreatePricingModelBody
-
+  class CreatePricingModelBody < BaseModel
     # PricingModel Name
     # @return [String]
     attr_accessor :name
@@ -11,50 +10,71 @@ module Gonebusy
     # @return [String]
     attr_accessor :type
 
-    # Create a PricingModel for this User Id.  You must be authorized to manage this User Id.
-    # @return [Numeric]
-    attr_accessor :user_id
-
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
+    # 3 Letter ISO Currency Code
     # @return [String]
-    attr_accessor :api_key
+    attr_accessor :currency
 
     # Optional Notes Field
     # @return [String]
     attr_accessor :notes
 
     # Price
-    # @return [Double]
+    # @return [Float]
     attr_accessor :price
 
-    # 3 Letter ISO Currency Code
-    # @return [String]
-    attr_accessor :currency
+    # Create a PricingModel for this User Id.  You must be authorized to manage this User Id.
+    # @return [Integer]
+    attr_accessor :user_id
 
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["name"] = "name"
+        @hash["type"] = "type"
+        @hash["currency"] = "currency"
+        @hash["notes"] = "notes"
+        @hash["price"] = "price"
+        @hash["user_id"] = "user_id"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(name = nil,
+                   type = nil,
+                   currency = nil,
+                   notes = nil,
+                   price = nil,
+                   user_id = nil)
+      @name = name
+      @type = type
+      @currency = currency
+      @notes = notes
+      @price = price
+      @user_id = user_id
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['type'] = self.type
-      hash['user_id'] = self.user_id
-      hash['api_key'] = self.api_key
-      hash['notes'] = self.notes
-      hash['price'] = self.price
-      hash['currency'] = self.currency
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        name = hash["name"]
+        type = hash["type"]
+        currency = hash["currency"]
+        notes = hash["notes"]
+        price = hash["price"]
+        user_id = hash["user_id"]
 
+        # Create object from extracted values
+        CreatePricingModelBody.new(name,
+                                   type,
+                                   currency,
+                                   notes,
+                                   price,
+                                   user_id)
+      end
+    end
   end
 end

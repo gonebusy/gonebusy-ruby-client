@@ -1,54 +1,64 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class SearchController
+  class SearchController < BaseController
+    @@instance = SearchController.new
+    # Singleton instance of the controller class
+    def self.instance
+      @@instance
+    end
 
     # Search for Providers and Provided Services.
-    # @param [String] api_key Required parameter: Valid API Key for your GoneBusy account (edit in top nav)
-    # @param [String] query Required parameter: TODO: type description here
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] query Required parameter: Example: 
     # @return SearchQueryResponse response from the API call
-    def search_query api_key, query
+    def search_query(options = Hash.new)
+
       # the base uri for api requests
-      query_builder = Configuration.BASE_URI.dup
+      _query_builder = Configuration.base_uri.dup
 
       # prepare query string for API call
-      query_builder << "/search/{query}"
+      _query_builder << '/search/{query}'
 
       # process optional query parameters
-      query_builder = APIHelper.append_url_with_template_parameters query_builder, {
-        "query" => query,
-      }
-
-      # process optional query parameters
-      query_builder = APIHelper.append_url_with_query_parameters query_builder, {
-        "api_key" => api_key,
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'query' => options['query']
       }
 
       # validate and preprocess url
-      query_url = APIHelper.clean_url query_builder
+      _query_url = APIHelper.clean_url _query_builder
 
       # prepare headers
-      headers = {
-        "user-agent" => "APIMATIC 2.0",
-        "accept" => "application/json"
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => options['authorization']
       }
 
-      # invoke the API call request to fetch the response
-      response = Unirest.get query_url, headers:headers
+      # create the HttpRequest object for the call
+      _request = @http_client.get _query_url, headers: _headers
 
-      # Error handling using HTTP status codes
-      if response.code == 400
-        raise APIException.new "Bad Request", 400, response.raw_body
-      elsif response.code == 401
-        raise APIException.new "Unauthorized/Missing Token", 401, response.raw_body
-      elsif response.code == 500
-        raise APIException.new "Unexpected error", 500, response.raw_body
-      elsif !(response.code.between?(200,206)) # [200,206] = HTTP OK
-        raise APIException.new "HTTP Response Not OK", response.code, response.raw_body
+      # apply authentication
+      CustomAuth.apply(_request)
+
+      # execute the request
+      _context = execute_request(_request)
+
+      # endpoint error handling using HTTP status codes.
+      if _context.response.status_code == 400
+        raise EntitiesErrorException.new '400 - Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorException.new '401 - Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 500
+        raise APIException.new '500 - Unexpected error', _context
       end
 
-      response.body
-    end
+      # global error handling using HTTP status codes.
+      validate_response(_context)
 
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return SearchQueryResponse.from_hash(decoded)
+    end
   end
 end

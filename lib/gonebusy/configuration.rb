@@ -1,16 +1,16 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
-
-module Gonebusy 
+module Gonebusy
   class Configuration
-
     # The base Uri for API calls
-    @BASE_URI = "http://beta.gonebusy.com/api/v1"
+    @base_uri = 'http://beta.gonebusy.com/api/v1'
 
+    # Set Authorization to "Token <your API key>"
+    @authorization = 'Token <your API key>'
 
-    # create the getters and setters
+    # The attribute accessors for public properties
     class << self
-      attr_accessor :BASE_URI
-
+      attr_accessor :base_uri
+      attr_accessor :authorization
     end
+ 
   end
 end
