@@ -1,65 +1,89 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class UpdateServiceByIdBody
-
-    # Service Name
+  class UpdateServiceByIdBody < BaseModel
+    # Optional List of comma-separated Category IDs to associate with Service
     # @return [String]
-    attr_accessor :name
+    attr_accessor :categories
 
     # Service Description
     # @return [String]
     attr_accessor :description
 
     # Duration in minutes of the Service
-    # @return [Numeric]
+    # @return [Integer]
     attr_accessor :duration
 
-    # Optional abbreviated Service name
+    # Service Name
     # @return [String]
-    attr_accessor :short_name
+    attr_accessor :name
 
     # Optional Price Model Id
-    # @return [Numeric]
+    # @return [Integer]
     attr_accessor :price_model_id
 
     # Optional List of comma-separated Resource IDs that will provide this Service, default: API user's resource id
     # @return [String]
     attr_accessor :resources
 
-    # Optional List of comma-separated Category IDs to associate with Service
+    # Optional abbreviated Service name
     # @return [String]
-    attr_accessor :categories
+    attr_accessor :short_name
 
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
-    # @return [String]
-    attr_accessor :api_key
-
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["categories"] = "categories"
+        @hash["description"] = "description"
+        @hash["duration"] = "duration"
+        @hash["name"] = "name"
+        @hash["price_model_id"] = "price_model_id"
+        @hash["resources"] = "resources"
+        @hash["short_name"] = "short_name"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(categories = nil,
+                   description = nil,
+                   duration = nil,
+                   name = nil,
+                   price_model_id = nil,
+                   resources = nil,
+                   short_name = nil)
+      @categories = categories
+      @description = description
+      @duration = duration
+      @name = name
+      @price_model_id = price_model_id
+      @resources = resources
+      @short_name = short_name
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['description'] = self.description
-      hash['duration'] = self.duration
-      hash['short_name'] = self.short_name
-      hash['price_model_id'] = self.price_model_id
-      hash['resources'] = self.resources
-      hash['categories'] = self.categories
-      hash['api_key'] = self.api_key
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        categories = hash["categories"]
+        description = hash["description"]
+        duration = hash["duration"]
+        name = hash["name"]
+        price_model_id = hash["price_model_id"]
+        resources = hash["resources"]
+        short_name = hash["short_name"]
 
+        # Create object from extracted values
+        UpdateServiceByIdBody.new(categories,
+                                  description,
+                                  duration,
+                                  name,
+                                  price_model_id,
+                                  resources,
+                                  short_name)
+      end
+    end
   end
 end

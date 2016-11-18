@@ -1,55 +1,71 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class CreateCategoryBody
-
-    # Category Name
-    # @return [String]
-    attr_accessor :name
-
+  class CreateCategoryBody < BaseModel
     # Category Description
     # @return [String]
     attr_accessor :description
 
-    # Optional abbreviated Category name
+    # Category Name
     # @return [String]
-    attr_accessor :short_name
+    attr_accessor :name
 
     # Optional full name of Category
     # @return [String]
     attr_accessor :long_name
 
     # Optional Id of Parent Category
-    # @return [Numeric]
+    # @return [Integer]
     attr_accessor :parent_category_id
 
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
+    # Optional abbreviated Category name
     # @return [String]
-    attr_accessor :api_key
+    attr_accessor :short_name
 
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["description"] = "description"
+        @hash["name"] = "name"
+        @hash["long_name"] = "long_name"
+        @hash["parent_category_id"] = "parent_category_id"
+        @hash["short_name"] = "short_name"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(description = nil,
+                   name = nil,
+                   long_name = nil,
+                   parent_category_id = nil,
+                   short_name = nil)
+      @description = description
+      @name = name
+      @long_name = long_name
+      @parent_category_id = parent_category_id
+      @short_name = short_name
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['description'] = self.description
-      hash['short_name'] = self.short_name
-      hash['long_name'] = self.long_name
-      hash['parent_category_id'] = self.parent_category_id
-      hash['api_key'] = self.api_key
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        description = hash["description"]
+        name = hash["name"]
+        long_name = hash["long_name"]
+        parent_category_id = hash["parent_category_id"]
+        short_name = hash["short_name"]
 
+        # Create object from extracted values
+        CreateCategoryBody.new(description,
+                               name,
+                               long_name,
+                               parent_category_id,
+                               short_name)
+      end
+    end
   end
 end

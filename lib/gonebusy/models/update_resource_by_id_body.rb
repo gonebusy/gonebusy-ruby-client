@@ -1,55 +1,71 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class UpdateResourceByIdBody
-
-    # Resource Name
-    # @return [String]
-    attr_accessor :name
-
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
-    # @return [String]
-    attr_accessor :api_key
+  class UpdateResourceByIdBody < BaseModel
+    # Optional Capacity
+    # @return [Integer]
+    attr_accessor :capacity
 
     # Optional Description
     # @return [String]
     attr_accessor :description
 
-    # Optional Capacity
-    # @return [Numeric]
-    attr_accessor :capacity
-
     # Optional Gender
-    # @return [String]
+    # @return [GenderEnum]
     attr_accessor :gender
 
+    # Resource Name
+    # @return [String]
+    attr_accessor :name
+
     # When Resource is a Thing, the type Id
-    # @return [Numeric]
+    # @return [Integer]
     attr_accessor :thing_type_id
 
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["capacity"] = "capacity"
+        @hash["description"] = "description"
+        @hash["gender"] = "gender"
+        @hash["name"] = "name"
+        @hash["thing_type_id"] = "thing_type_id"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(capacity = nil,
+                   description = nil,
+                   gender = nil,
+                   name = nil,
+                   thing_type_id = nil)
+      @capacity = capacity
+      @description = description
+      @gender = gender
+      @name = name
+      @thing_type_id = thing_type_id
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['api_key'] = self.api_key
-      hash['description'] = self.description
-      hash['capacity'] = self.capacity
-      hash['gender'] = self.gender
-      hash['thing_type_id'] = self.thing_type_id
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        capacity = hash["capacity"]
+        description = hash["description"]
+        gender = hash["gender"]
+        name = hash["name"]
+        thing_type_id = hash["thing_type_id"]
 
+        # Create object from extracted values
+        UpdateResourceByIdBody.new(capacity,
+                                   description,
+                                   gender,
+                                   name,
+                                   thing_type_id)
+      end
+    end
   end
 end

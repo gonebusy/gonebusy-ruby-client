@@ -1,50 +1,62 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class UpdatePricingModelByIdBody
+  class UpdatePricingModelByIdBody < BaseModel
+    # 3 Letter ISO Currency Code
+    # @return [String]
+    attr_accessor :currency
 
     # PricingModel Name
     # @return [String]
     attr_accessor :name
-
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
-    # @return [String]
-    attr_accessor :api_key
 
     # Optional Notes Field
     # @return [String]
     attr_accessor :notes
 
     # Price
-    # @return [Double]
+    # @return [Float]
     attr_accessor :price
 
-    # 3 Letter ISO Currency Code
-    # @return [String]
-    attr_accessor :currency
-
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["currency"] = "currency"
+        @hash["name"] = "name"
+        @hash["notes"] = "notes"
+        @hash["price"] = "price"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(currency = nil,
+                   name = nil,
+                   notes = nil,
+                   price = nil)
+      @currency = currency
+      @name = name
+      @notes = notes
+      @price = price
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['api_key'] = self.api_key
-      hash['notes'] = self.notes
-      hash['price'] = self.price
-      hash['currency'] = self.currency
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        currency = hash["currency"]
+        name = hash["name"]
+        notes = hash["notes"]
+        price = hash["price"]
 
+        # Create object from extracted values
+        UpdatePricingModelByIdBody.new(currency,
+                                       name,
+                                       notes,
+                                       price)
+      end
+    end
   end
 end

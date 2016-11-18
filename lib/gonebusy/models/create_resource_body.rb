@@ -1,8 +1,7 @@
-# This file was automatically generated for GoneBusy Inc. by APIMATIC BETA v2.0 on 03/04/2016
+# This file was automatically generated for GoneBusy Inc. by APIMATIC v2.0 ( https://apimatic.io ).
 
 module Gonebusy
-  class CreateResourceBody
-
+  class CreateResourceBody < BaseModel
     # Resource Name
     # @return [String]
     attr_accessor :name
@@ -11,55 +10,80 @@ module Gonebusy
     # @return [String]
     attr_accessor :type
 
-    # Create a Resource for this User Id.  You must be authorized to manage this User Id.
-    # @return [Numeric]
-    attr_accessor :user_id
-
-    # Valid API Key for your GoneBusy account
-    # (edit in top nav)
-    # @return [String]
-    attr_accessor :api_key
+    # Optional Capacity
+    # @return [Integer]
+    attr_accessor :capacity
 
     # Optional Description
     # @return [String]
     attr_accessor :description
 
-    # Optional Capacity
-    # @return [Numeric]
-    attr_accessor :capacity
-
     # Optional Gender
-    # @return [String]
+    # @return [GenderEnum]
     attr_accessor :gender
 
     # When Resource is a Thing, the type Id
-    # @return [Numeric]
+    # @return [Integer]
     attr_accessor :thing_type_id
 
-    
-    def method_missing (method_name)
-      puts "there's no method called '#{method_name}'"
+    # Create a Resource for this User Id.  You must be authorized to manage this User Id.
+    # @return [Integer]
+    attr_accessor :user_id
+
+    # A mapping from model property names to API property names
+    def self.names
+      if @hash.nil?
+        @hash = {}
+        @hash["name"] = "name"
+        @hash["type"] = "type"
+        @hash["capacity"] = "capacity"
+        @hash["description"] = "description"
+        @hash["gender"] = "gender"
+        @hash["thing_type_id"] = "thing_type_id"
+        @hash["user_id"] = "user_id"
+      end
+      @hash
     end
 
-    # Creates JSON of the curent object  
-    def to_json
-      hash = self.key_map()
-      hash.to_json
+    def initialize(name = nil,
+                   type = nil,
+                   capacity = nil,
+                   description = nil,
+                   gender = nil,
+                   thing_type_id = nil,
+                   user_id = nil)
+      @name = name
+      @type = type
+      @capacity = capacity
+      @description = description
+      @gender = gender
+      @thing_type_id = thing_type_id
+      @user_id = user_id
     end
 
-    # Defines the key map for json serialization  
-    def key_map
-      hash = {}
-      hash['name'] = self.name
-      hash['type'] = self.type
-      hash['user_id'] = self.user_id
-      hash['api_key'] = self.api_key
-      hash['description'] = self.description
-      hash['capacity'] = self.capacity
-      hash['gender'] = self.gender
-      hash['thing_type_id'] = self.thing_type_id
-      hash
-    end
+    # Creates an instance of the object from a hash
+    def self.from_hash(hash)
+      if hash == nil
+        nil
+      else
+        # Extract variables from the hash
+        name = hash["name"]
+        type = hash["type"]
+        capacity = hash["capacity"]
+        description = hash["description"]
+        gender = hash["gender"]
+        thing_type_id = hash["thing_type_id"]
+        user_id = hash["user_id"]
 
+        # Create object from extracted values
+        CreateResourceBody.new(name,
+                               type,
+                               capacity,
+                               description,
+                               gender,
+                               thing_type_id,
+                               user_id)
+      end
+    end
   end
 end
