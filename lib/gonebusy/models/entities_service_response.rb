@@ -10,9 +10,13 @@ module Gonebusy
     # @return [String]
     attr_accessor :description
 
-    # length in minutes of Service
+    # length of Service in minutes
     # @return [Integer]
     attr_accessor :duration
+
+    # max length of Service in minutes
+    # @return [Integer]
+    attr_accessor :max_duration
 
     # id of Service
     # @return [Integer]
@@ -49,6 +53,7 @@ module Gonebusy
         @hash["categories"] = "categories"
         @hash["description"] = "description"
         @hash["duration"] = "duration"
+        @hash["max_duration"] = "max_duration"
         @hash["id"] = "id"
         @hash["is_active"] = "is_active"
         @hash["name"] = "name"
@@ -63,6 +68,7 @@ module Gonebusy
     def initialize(categories = nil,
                    description = nil,
                    duration = nil,
+                   max_duration = nil,
                    id = nil,
                    is_active = nil,
                    name = nil,
@@ -73,6 +79,7 @@ module Gonebusy
       @categories = categories
       @description = description
       @duration = duration
+      @max_duration = max_duration
       @id = id
       @is_active = is_active
       @name = name
@@ -91,6 +98,7 @@ module Gonebusy
         categories = hash["categories"]
         description = hash["description"]
         duration = hash["duration"]
+        max_duration = hash["max_duration"]
         id = hash["id"]
         is_active = hash["is_active"]
         name = hash["name"]
@@ -103,6 +111,7 @@ module Gonebusy
         EntitiesServiceResponse.new(categories,
                                     description,
                                     duration,
+                                    max_duration,
                                     id,
                                     is_active,
                                     name,
