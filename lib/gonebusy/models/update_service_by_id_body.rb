@@ -10,9 +10,13 @@ module Gonebusy
     # @return [String]
     attr_accessor :description
 
-    # Duration in minutes of the Service
+    # Duration of the Service in minutes
     # @return [Integer]
     attr_accessor :duration
+
+    # Max duration of the Service in minutes
+    # @return [Integer]
+    attr_accessor :max_duration
 
     # Service Name
     # @return [String]
@@ -37,6 +41,7 @@ module Gonebusy
         @hash["categories"] = "categories"
         @hash["description"] = "description"
         @hash["duration"] = "duration"
+        @hash["max_duration"] = "max_duration"
         @hash["name"] = "name"
         @hash["price_model_id"] = "price_model_id"
         @hash["resources"] = "resources"
@@ -48,6 +53,7 @@ module Gonebusy
     def initialize(categories = nil,
                    description = nil,
                    duration = nil,
+                   max_duration = nil,
                    name = nil,
                    price_model_id = nil,
                    resources = nil,
@@ -55,6 +61,7 @@ module Gonebusy
       @categories = categories
       @description = description
       @duration = duration
+      @max_duration = max_duration
       @name = name
       @price_model_id = price_model_id
       @resources = resources
@@ -70,6 +77,7 @@ module Gonebusy
         categories = hash["categories"]
         description = hash["description"]
         duration = hash["duration"]
+        max_duration = hash["max_duration"]
         name = hash["name"]
         price_model_id = hash["price_model_id"]
         resources = hash["resources"]
@@ -79,6 +87,7 @@ module Gonebusy
         UpdateServiceByIdBody.new(categories,
                                   description,
                                   duration,
+                                  max_duration,
                                   name,
                                   price_model_id,
                                   resources,

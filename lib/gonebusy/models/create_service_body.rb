@@ -6,9 +6,13 @@ module Gonebusy
     # @return [String]
     attr_accessor :description
 
-    # Duration in minutes of the Service
+    # Duration of the Service in minutes
     # @return [Integer]
     attr_accessor :duration
+
+    # Max duration of the Service in minutes
+    # @return [Integer]
+    attr_accessor :max_duration
 
     # Service Name
     # @return [String]
@@ -40,6 +44,7 @@ module Gonebusy
         @hash = {}
         @hash["description"] = "description"
         @hash["duration"] = "duration"
+        @hash["max_duration"] = "max_duration"
         @hash["name"] = "name"
         @hash["categories"] = "categories"
         @hash["price_model_id"] = "price_model_id"
@@ -52,6 +57,7 @@ module Gonebusy
 
     def initialize(description = nil,
                    duration = nil,
+                   max_duration = nil,
                    name = nil,
                    categories = nil,
                    price_model_id = nil,
@@ -60,6 +66,7 @@ module Gonebusy
                    user_id = nil)
       @description = description
       @duration = duration
+      @max_duration = max_duration
       @name = name
       @categories = categories
       @price_model_id = price_model_id
@@ -76,6 +83,7 @@ module Gonebusy
         # Extract variables from the hash
         description = hash["description"]
         duration = hash["duration"]
+        max_duration = hash["max_duration"]
         name = hash["name"]
         categories = hash["categories"]
         price_model_id = hash["price_model_id"]
@@ -86,6 +94,7 @@ module Gonebusy
         # Create object from extracted values
         CreateServiceBody.new(description,
                               duration,
+                              max_duration,
                               name,
                               categories,
                               price_model_id,
