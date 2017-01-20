@@ -4,19 +4,19 @@ module Gonebusy
   class GetPricingModelByIdResponse < BaseModel
     # TODO: Write general description for this method
     # @return [EntitiesPricingModelResponse]
-    attr_accessor :pricing_models
+    attr_accessor :pricing_model
 
     # A mapping from model property names to API property names
     def self.names
       if @hash.nil?
         @hash = {}
-        @hash["pricing_models"] = "pricing_models"
+        @hash["pricing_model"] = "pricing_model"
       end
       @hash
     end
 
-    def initialize(pricing_models = nil)
-      @pricing_models = pricing_models
+    def initialize(pricing_model = nil)
+      @pricing_model = pricing_model
     end
 
     # Creates an instance of the object from a hash
@@ -25,10 +25,10 @@ module Gonebusy
         nil
       else
         # Extract variables from the hash
-        pricing_models = EntitiesPricingModelResponse.from_hash(hash["pricing_models"]) if hash["pricing_models"]
+        pricing_model = EntitiesPricingModelResponse.from_hash(hash["pricing_model"]) if hash["pricing_model"]
 
         # Create object from extracted values
-        GetPricingModelByIdResponse.new(pricing_models)
+        GetPricingModelByIdResponse.new(pricing_model)
       end
     end
   end
