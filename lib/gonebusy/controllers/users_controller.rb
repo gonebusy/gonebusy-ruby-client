@@ -126,55 +126,6 @@ module Gonebusy
       return GetUserByIdResponse.from_hash(decoded)
     end
 
-    # Return list of active Pro Users.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @return GetUsersProsResponse response from the API call
-    def get_users_pros(authorization)
-
-      # the base uri for api requests
-      _query_builder = Configuration.base_uri.dup
-
-      # prepare query string for API call
-      _query_builder << '/users/pros'
-
-      # validate and preprocess url
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # create the HttpRequest object for the call
-      _request = @http_client.get _query_url, headers: _headers
-
-      # apply authentication
-      CustomAuth.apply(_request)
-
-      # execute the request
-      _context = execute_request(_request)
-
-      # endpoint error handling using HTTP status codes.
-      if _context.response.status_code == 400
-        raise EntitiesErrorException.new '400 - Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorException.new '401 - Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorException.new '403 - Forbidden', _context
-      elsif _context.response.status_code == 500
-        raise APIException.new '500 - Unexpected error', _context
-      end
-
-      # global error handling using HTTP status codes.
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetUsersProsResponse.from_hash(decoded)
-    end
-
     # Create a User
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [CreateUserBody] create_user_body Required parameter: the content of the request
