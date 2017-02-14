@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2017-02-13 ##
+### Added
+- Pull #7 - update for HTTPS
+
 ## [0.0.5] - 2017-01-19 ##
 ### Removed
 - Unnecessary /user/pros endpoint
