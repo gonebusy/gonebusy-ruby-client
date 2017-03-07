@@ -366,6 +366,8 @@ module Gonebusy
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [Integer] page Optional parameter: Page offset to fetch.
     # @param [Integer] per_page Optional parameter: Number of results to return per page.
+    # @param [Integer] resource_id Optional parameter: Retrieve Schedules only for this Resource.  You, or provided :user_id, must be authorized to manage this Resource.
+    # @param [Integer] service_id Optional parameter: Retrieve Schedules only for this Service.  You, or provided :user_id, must be authorized to manage this Service.
     # @param [Integer] user_id Optional parameter: Retrieve Schedules owned only by this User Id.  You must be authorized to manage this User Id.
     # @return GetSchedulesResponse response from the API call
     def get_schedules(options = Hash.new)
@@ -380,6 +382,8 @@ module Gonebusy
       _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
         'page' => options['page'],
         'per_page' => options['per_page'],
+        'resource_id' => options['resource_id'],
+        'service_id' => options['service_id'],
         'user_id' => options['user_id']
       }
 
