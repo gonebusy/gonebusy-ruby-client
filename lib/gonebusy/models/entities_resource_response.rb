@@ -11,7 +11,7 @@ module Gonebusy
     attr_accessor :description
 
     # gender of Resource, if applicable
-    # @return [Integer]
+    # @return [String]
     attr_accessor :gender
 
     # id of Resource
@@ -25,6 +25,10 @@ module Gonebusy
     # id of User owning Resource
     # @return [Integer]
     attr_accessor :owner_id
+
+    # if Calendar is primary, if applicable
+    # @return [Boolean]
+    attr_accessor :primary_cal
 
     # type of Resource
     # @return [String]
@@ -44,6 +48,7 @@ module Gonebusy
         @hash["id"] = "id"
         @hash["name"] = "name"
         @hash["owner_id"] = "owner_id"
+        @hash["primary_cal"] = "primary_cal"
         @hash["resource_type"] = "resource_type"
         @hash["thing_type_id"] = "thing_type_id"
       end
@@ -56,6 +61,7 @@ module Gonebusy
                    id = nil,
                    name = nil,
                    owner_id = nil,
+                   primary_cal = nil,
                    resource_type = nil,
                    thing_type_id = nil)
       @capacity = capacity
@@ -64,6 +70,7 @@ module Gonebusy
       @id = id
       @name = name
       @owner_id = owner_id
+      @primary_cal = primary_cal
       @resource_type = resource_type
       @thing_type_id = thing_type_id
     end
@@ -80,6 +87,7 @@ module Gonebusy
         id = hash["id"]
         name = hash["name"]
         owner_id = hash["owner_id"]
+        primary_cal = hash["primary_cal"]
         resource_type = hash["resource_type"]
         thing_type_id = hash["thing_type_id"]
 
@@ -90,6 +98,7 @@ module Gonebusy
                                      id,
                                      name,
                                      owner_id,
+                                     primary_cal,
                                      resource_type,
                                      thing_type_id)
       end
