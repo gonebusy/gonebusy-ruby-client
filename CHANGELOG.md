@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.8] - 2017-03-18 ##
+### Fixed
+- [#9](https://github.com/gonebusy/gonebusy-ruby-client/pull/9) - Fix type of :gender to String; Add :primary_cal to ResourceResponse - [@alexagranov](https://github.com/alexagranov)
+
 ## [0.0.7] - 2017-03-06 ##
 ### Added
 - update GET /schedules for query by resource_id, service_id
