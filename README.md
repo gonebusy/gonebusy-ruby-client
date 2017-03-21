@@ -1,4 +1,6 @@
-#Getting started
+[![Gem Version](https://badge.fury.io/rb/gonebusy-ruby-client.svg)](https://badge.fury.io/rb/gonebusy-ruby-client)
+
+## Getting started
 
 ## Sandbox
 
