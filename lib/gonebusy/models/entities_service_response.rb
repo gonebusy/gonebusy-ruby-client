@@ -60,6 +60,7 @@ module Gonebusy
         @hash["owner_id"] = "owner_id"
         @hash["price_model_id"] = "price_model_id"
         @hash["resources"] = "resources"
+        @hash["schedules"] = "schedules"
         @hash["short_name"] = "short_name"
       end
       @hash
@@ -75,6 +76,7 @@ module Gonebusy
                    owner_id = nil,
                    price_model_id = nil,
                    resources = nil,
+                   schedules = nil,
                    short_name = nil)
       @categories = categories
       @description = description
@@ -86,6 +88,7 @@ module Gonebusy
       @owner_id = owner_id
       @price_model_id = price_model_id
       @resources = resources
+      @schedules = schedules
       @short_name = short_name
     end
 
@@ -105,6 +108,7 @@ module Gonebusy
         owner_id = hash["owner_id"]
         price_model_id = hash["price_model_id"]
         resources = hash["resources"]
+        schedules = hash["schedules"]
         short_name = hash["short_name"]
 
         # Create object from extracted values
@@ -118,6 +122,7 @@ module Gonebusy
                                     owner_id,
                                     price_model_id,
                                     resources,
+                                    schedules,
                                     short_name)
       end
     end
