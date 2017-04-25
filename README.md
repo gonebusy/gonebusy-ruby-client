@@ -20,17 +20,16 @@ This client library is a Ruby gem which can be compiled and used in your Ruby an
 
 ## How to Use
 
-## How to Test
+### API Key
 
-You can test the generated SDK and the server with automatically generated test
-cases as follows:
+If testing with Sandbox, [Signup/Logon](https://sandbox.gonebusy.com/login) at https://sandbox.gonebusy.com/login.
 
-  1. From terminal/cmd navigate to the root directory of the SDK.
-  2. Invoke: `bundle exec rake`
+If using Production site, [Signup/Logon](https://beta.gonebusy.com/login) at https://beta.gonebusy.com/login.
 
-## Initialization
+Once logged in, navigate to the API Key page and request an API key.
 
-### Authentication
+### Initialization/Authentication
+
 In order to setup authentication and initialization of the API client, you need the following information.
 
 | Parameter | Description |
@@ -46,6 +45,14 @@ authorization = "Token <your API key>"; # Set Authorization to "Token <your API 
 
 client = Gonebusy::GonebusyClient.new(authorization)
 ```
+
+## How to Test
+
+You can test the generated SDK and the server with automatically generated test
+cases as follows:
+
+  1. From terminal/cmd navigate to the root directory of the SDK.
+  2. Invoke: `bundle exec rake`
 
 ## Class Reference
 
