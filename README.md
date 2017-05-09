@@ -184,7 +184,11 @@ result = bookings.get_bookings(collect)
 
 
 ```ruby
-def cancel_booking_by_id(options = Hash.new); end
+def cancel_booking_by_id(authorization,
+                             id,
+                             cancel_recurring = nil,
+                             date = nil,
+                             end_date = nil); end
 ```
 
 #### Parameters
@@ -193,21 +197,21 @@ def cancel_booking_by_id(options = Hash.new); end
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
+| cancel_recurring |  ``` Optional ```  | When a recurring booking, one of: ['instance', 'all', 'infinite'] |
+| date |  ``` Optional ```  | If a recurring booking, the date of an instance to cancel.  Several formats are supported: '2014-10-31', 'October 31, 2014' |
+| end_date |  ``` Optional ```  | If recurring, cancel up to :end_date or leave blank for infinite booking.  Several formats are supported: '2014-10-31', 'October 31, 2014'. |
 
 
 #### Example Usage
 
 ```ruby
-collect = Hash.new
-
 authorization = 'Authorization'
-collect['authorization'] = authorization
-
 id = 'id'
-collect['id'] = id
+cancel_recurring = 'cancel_recurring'
+date = DateTime.now
+end_date = DateTime.now
 
-
-result = bookings.cancel_booking_by_id(collect)
+result = bookings.cancel_booking_by_id(authorization, id, cancel_recurring, date, end_date)
 
 ```
 
@@ -229,7 +233,9 @@ result = bookings.cancel_booking_by_id(collect)
 
 
 ```ruby
-def update_booking_by_id(options = Hash.new); end
+def update_booking_by_id(authorization,
+                             id,
+                             update_booking_by_id_body = nil); end
 ```
 
 #### Parameters
@@ -238,21 +244,17 @@ def update_booking_by_id(options = Hash.new); end
 |-----------|------|-------------|
 | authorization |  ``` Required ```  | A valid API key, in the format 'Token API_KEY' |
 | id |  ``` Required ```  | TODO: Add a parameter description |
+| update_booking_by_id_body |  ``` Optional ```  | the content of the request |
 
 
 #### Example Usage
 
 ```ruby
-collect = Hash.new
-
 authorization = 'Authorization'
-collect['authorization'] = authorization
-
 id = 'id'
-collect['id'] = id
+update_booking_by_id_body = UpdateBookingByIdBody.new
 
-
-result = bookings.update_booking_by_id(collect)
+result = bookings.update_booking_by_id(authorization, id, update_booking_by_id_body)
 
 ```
 
