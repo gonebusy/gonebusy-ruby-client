@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2017-05-25 ##
+### Changed
+- [#12](https://github.com/gonebusy/gonebusy-nodejs-client/pull/12) - POST /bookings/new :user_id is now a required parameter.
+
+### Added
+- [#12](https://github.com/gonebusy/gonebusy-nodejs-client/pull/12) - GET /bookings now supports optional :booker_id parameter to filter retrieved bookings to those made on behalf of :booker_id.
+
 ## [0.1.0] - 2017-05-09 ##
 ### NOTE - This version introduces breaking changes and additions listed below.
 

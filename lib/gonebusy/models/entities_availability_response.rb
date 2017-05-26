@@ -16,13 +16,13 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["id"] = "id"
-        @hash["owner_id"] = "owner_id"
-        @hash["resources"] = "resources"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["resources"] = "resources"
       end
-      @hash
+      @_hash
     end
 
     def initialize(id = nil,
@@ -35,24 +35,22 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        id = hash['id']
-        owner_id = hash['owner_id']
-        # Parameter is an array, so we need to iterate through it
-        resources = nil
-        if hash['resources'] != nil
-          resources = Array.new
-          hash['resources'].each{|structure| resources << (EntitiesResourceAvailabilities.from_hash(structure) if structure)}
-        end
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesAvailabilityResponse.new(id,
-                                         owner_id,
-                                         resources)
+      # Extract variables from the hash
+      id = hash['id']
+      owner_id = hash['owner_id']
+      # Parameter is an array, so we need to iterate through it
+      resources = nil
+      if hash['resources'] != nil
+        resources = Array.new
+        hash['resources'].each{|structure| resources << (EntitiesResourceAvailabilities.from_hash(structure) if structure)}
       end
+
+      # Create object from extracted values
+      EntitiesAvailabilityResponse.new(id,
+                                       owner_id,
+                                       resources)
     end
   end
 end

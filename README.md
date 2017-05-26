@@ -139,7 +139,8 @@ def get_bookings(options = Hash.new); end
 | page |  ``` Optional ```  ``` DefaultValue ```  | Page offset to fetch. |
 | per_page |  ``` Optional ```  ``` DefaultValue ```  | Number of results to return per page. |
 | states |  ``` Optional ```  | Comma-separated list of Booking states to retrieve only Bookings in those states.  Leave blank to retrieve all Bookings. |
-| user_id |  ``` Optional ```  | Retrieve Bookings owned only by this User Id.  You must be authorized to manage this User Id. |
+| user_id |  ``` Optional ```  | Retrieve Bookings for Resources/Services owned by this User Id.  You must be authorized to manage this User Id. |
+| booker_id |  ``` Optional ```  | Retrieve Bookings make by Booker Id. |
 
 
 #### Example Usage

@@ -2,18 +2,6 @@
 
 module Gonebusy
   class EntitiesResourceResponse < BaseModel
-    # capacity of Resource, if applicable
-    # @return [Integer]
-    attr_accessor :capacity
-
-    # description of Resource
-    # @return [String]
-    attr_accessor :description
-
-    # gender of Resource, if applicable
-    # @return [String]
-    attr_accessor :gender
-
     # id of Resource
     # @return [Integer]
     attr_accessor :id
@@ -22,86 +10,96 @@ module Gonebusy
     # @return [String]
     attr_accessor :name
 
+    # description of Resource
+    # @return [String]
+    attr_accessor :description
+
     # id of User owning Resource
     # @return [Integer]
     attr_accessor :owner_id
-
-    # if Calendar is primary, if applicable
-    # @return [Boolean]
-    attr_accessor :primary_cal
 
     # type of Resource
     # @return [String]
     attr_accessor :resource_type
 
+    # capacity of Resource, if applicable
+    # @return [Integer]
+    attr_accessor :capacity
+
+    # gender of Resource, if applicable
+    # @return [String]
+    attr_accessor :gender
+
     # type Id of Thing Resource, if applicable
     # @return [Integer]
     attr_accessor :thing_type_id
 
+    # if Calendar is primary, if applicable
+    # @return [Boolean]
+    attr_accessor :primary_cal
+
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["capacity"] = "capacity"
-        @hash["description"] = "description"
-        @hash["gender"] = "gender"
-        @hash["id"] = "id"
-        @hash["name"] = "name"
-        @hash["owner_id"] = "owner_id"
-        @hash["primary_cal"] = "primary_cal"
-        @hash["resource_type"] = "resource_type"
-        @hash["thing_type_id"] = "thing_type_id"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["name"] = "name"
+        @_hash["description"] = "description"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["resource_type"] = "resource_type"
+        @_hash["capacity"] = "capacity"
+        @_hash["gender"] = "gender"
+        @_hash["thing_type_id"] = "thing_type_id"
+        @_hash["primary_cal"] = "primary_cal"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(capacity = nil,
-                   description = nil,
-                   gender = nil,
-                   id = nil,
+    def initialize(id = nil,
                    name = nil,
+                   description = nil,
                    owner_id = nil,
-                   primary_cal = nil,
                    resource_type = nil,
-                   thing_type_id = nil)
-      @capacity = capacity
-      @description = description
-      @gender = gender
+                   capacity = nil,
+                   gender = nil,
+                   thing_type_id = nil,
+                   primary_cal = nil)
       @id = id
       @name = name
+      @description = description
       @owner_id = owner_id
-      @primary_cal = primary_cal
       @resource_type = resource_type
+      @capacity = capacity
+      @gender = gender
       @thing_type_id = thing_type_id
+      @primary_cal = primary_cal
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        capacity = hash['capacity']
-        description = hash['description']
-        gender = hash['gender']
-        id = hash['id']
-        name = hash['name']
-        owner_id = hash['owner_id']
-        primary_cal = hash['primary_cal']
-        resource_type = hash['resource_type']
-        thing_type_id = hash['thing_type_id']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesResourceResponse.new(capacity,
-                                     description,
-                                     gender,
-                                     id,
-                                     name,
-                                     owner_id,
-                                     primary_cal,
-                                     resource_type,
-                                     thing_type_id)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      name = hash['name']
+      description = hash['description']
+      owner_id = hash['owner_id']
+      resource_type = hash['resource_type']
+      capacity = hash['capacity']
+      gender = hash['gender']
+      thing_type_id = hash['thing_type_id']
+      primary_cal = hash['primary_cal']
+
+      # Create object from extracted values
+      EntitiesResourceResponse.new(id,
+                                   name,
+                                   description,
+                                   owner_id,
+                                   resource_type,
+                                   capacity,
+                                   gender,
+                                   thing_type_id,
+                                   primary_cal)
     end
   end
 end

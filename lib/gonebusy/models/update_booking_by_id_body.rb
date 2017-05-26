@@ -6,13 +6,9 @@ module Gonebusy
     # @return [Date]
     attr_accessor :date
 
-    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
-    # @return [DateRecursByEnum]
-    attr_accessor :date_recurs_by
-
-    # List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
+    # New time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
     # @return [String]
-    attr_accessor :days
+    attr_accessor :time
 
     # New length of time, in minutes, for the desired booking - if Service allows requesting a variable amount of time
     # @return [Integer]
@@ -22,21 +18,25 @@ module Gonebusy
     # @return [Date]
     attr_accessor :end_date
 
+    # One of the possible recurrence values.
+    # @return [RecursByEnum]
+    attr_accessor :recurs_by
+
     # Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc.
     # @return [FrequencyEnum]
     attr_accessor :frequency
+
+    # List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
+    # @return [String]
+    attr_accessor :days
 
     # Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.
     # @return [OccurrenceEnum]
     attr_accessor :occurrence
 
-    # One of the possible recurrence values.
-    # @return [RecursByEnum]
-    attr_accessor :recurs_by
-
-    # New time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
-    # @return [String]
-    attr_accessor :time
+    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
+    # @return [DateRecursByEnum]
+    attr_accessor :date_recurs_by
 
     # When a recurring booking, one of: ['instance', 'all', 'infinite']
     # @return [String]
@@ -44,73 +44,71 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["date"] = "date"
-        @hash["date_recurs_by"] = "date_recurs_by"
-        @hash["days"] = "days"
-        @hash["duration"] = "duration"
-        @hash["end_date"] = "end_date"
-        @hash["frequency"] = "frequency"
-        @hash["occurrence"] = "occurrence"
-        @hash["recurs_by"] = "recurs_by"
-        @hash["time"] = "time"
-        @hash["update_recurring"] = "update_recurring"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["date"] = "date"
+        @_hash["time"] = "time"
+        @_hash["duration"] = "duration"
+        @_hash["end_date"] = "end_date"
+        @_hash["recurs_by"] = "recurs_by"
+        @_hash["frequency"] = "frequency"
+        @_hash["days"] = "days"
+        @_hash["occurrence"] = "occurrence"
+        @_hash["date_recurs_by"] = "date_recurs_by"
+        @_hash["update_recurring"] = "update_recurring"
       end
-      @hash
+      @_hash
     end
 
     def initialize(date = nil,
-                   date_recurs_by = nil,
-                   days = nil,
+                   time = nil,
                    duration = nil,
                    end_date = nil,
-                   frequency = nil,
-                   occurrence = nil,
                    recurs_by = nil,
-                   time = nil,
+                   frequency = nil,
+                   days = nil,
+                   occurrence = nil,
+                   date_recurs_by = nil,
                    update_recurring = nil)
       @date = date
-      @date_recurs_by = date_recurs_by
-      @days = days
+      @time = time
       @duration = duration
       @end_date = end_date
-      @frequency = frequency
-      @occurrence = occurrence
       @recurs_by = recurs_by
-      @time = time
+      @frequency = frequency
+      @days = days
+      @occurrence = occurrence
+      @date_recurs_by = date_recurs_by
       @update_recurring = update_recurring
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        date = hash['date']
-        date_recurs_by = hash['date_recurs_by']
-        days = hash['days']
-        duration = hash['duration']
-        end_date = hash['end_date']
-        frequency = hash['frequency']
-        occurrence = hash['occurrence']
-        recurs_by = hash['recurs_by']
-        time = hash['time']
-        update_recurring = hash['update_recurring']
+      return nil unless hash
 
-        # Create object from extracted values
-        UpdateBookingByIdBody.new(date,
-                                  date_recurs_by,
-                                  days,
-                                  duration,
-                                  end_date,
-                                  frequency,
-                                  occurrence,
-                                  recurs_by,
-                                  time,
-                                  update_recurring)
-      end
+      # Extract variables from the hash
+      date = hash['date']
+      time = hash['time']
+      duration = hash['duration']
+      end_date = hash['end_date']
+      recurs_by = hash['recurs_by']
+      frequency = hash['frequency']
+      days = hash['days']
+      occurrence = hash['occurrence']
+      date_recurs_by = hash['date_recurs_by']
+      update_recurring = hash['update_recurring']
+
+      # Create object from extracted values
+      UpdateBookingByIdBody.new(date,
+                                time,
+                                duration,
+                                end_date,
+                                recurs_by,
+                                frequency,
+                                days,
+                                occurrence,
+                                date_recurs_by,
+                                update_recurring)
     end
   end
 end

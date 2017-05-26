@@ -10,13 +10,17 @@ module Gonebusy
     # @return [String]
     attr_accessor :type
 
-    # Optional Capacity
+    # Create a Resource for this User Id.  You must be authorized to manage this User Id.
     # @return [Integer]
-    attr_accessor :capacity
+    attr_accessor :user_id
 
     # Optional Description
     # @return [String]
     attr_accessor :description
+
+    # Optional Capacity
+    # @return [Integer]
+    attr_accessor :capacity
 
     # Optional Gender
     # @return [GenderEnum]
@@ -26,64 +30,58 @@ module Gonebusy
     # @return [Integer]
     attr_accessor :thing_type_id
 
-    # Create a Resource for this User Id.  You must be authorized to manage this User Id.
-    # @return [Integer]
-    attr_accessor :user_id
-
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["name"] = "name"
-        @hash["type"] = "type"
-        @hash["capacity"] = "capacity"
-        @hash["description"] = "description"
-        @hash["gender"] = "gender"
-        @hash["thing_type_id"] = "thing_type_id"
-        @hash["user_id"] = "user_id"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["name"] = "name"
+        @_hash["type"] = "type"
+        @_hash["user_id"] = "user_id"
+        @_hash["description"] = "description"
+        @_hash["capacity"] = "capacity"
+        @_hash["gender"] = "gender"
+        @_hash["thing_type_id"] = "thing_type_id"
       end
-      @hash
+      @_hash
     end
 
     def initialize(name = nil,
                    type = nil,
-                   capacity = nil,
+                   user_id = nil,
                    description = nil,
+                   capacity = nil,
                    gender = nil,
-                   thing_type_id = nil,
-                   user_id = nil)
+                   thing_type_id = nil)
       @name = name
       @type = type
-      @capacity = capacity
+      @user_id = user_id
       @description = description
+      @capacity = capacity
       @gender = gender
       @thing_type_id = thing_type_id
-      @user_id = user_id
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        name = hash['name']
-        type = hash['type']
-        capacity = hash['capacity']
-        description = hash['description']
-        gender = hash['gender']
-        thing_type_id = hash['thing_type_id']
-        user_id = hash['user_id']
+      return nil unless hash
 
-        # Create object from extracted values
-        CreateResourceBody.new(name,
-                               type,
-                               capacity,
-                               description,
-                               gender,
-                               thing_type_id,
-                               user_id)
-      end
+      # Extract variables from the hash
+      name = hash['name']
+      type = hash['type']
+      user_id = hash['user_id']
+      description = hash['description']
+      capacity = hash['capacity']
+      gender = hash['gender']
+      thing_type_id = hash['thing_type_id']
+
+      # Create object from extracted values
+      CreateResourceBody.new(name,
+                             type,
+                             user_id,
+                             description,
+                             capacity,
+                             gender,
+                             thing_type_id)
     end
   end
 end

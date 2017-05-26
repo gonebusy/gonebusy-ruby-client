@@ -12,12 +12,12 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["date"] = "date"
-        @hash["slots"] = "slots"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["date"] = "date"
+        @_hash["slots"] = "slots"
       end
-      @hash
+      @_hash
     end
 
     def initialize(date = nil,
@@ -28,17 +28,15 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        date = hash['date']
-        slots = hash['slots']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesSlots.new(date,
-                          slots)
-      end
+      # Extract variables from the hash
+      date = hash['date']
+      slots = hash['slots']
+
+      # Create object from extracted values
+      EntitiesSlots.new(date,
+                        slots)
     end
   end
 end

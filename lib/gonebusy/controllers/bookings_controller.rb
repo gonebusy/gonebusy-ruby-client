@@ -8,27 +8,87 @@ module Gonebusy
       @@instance
     end
 
+    # Cancel a Booking by id
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] id Required parameter: Example: 
+    # @param [Date] date Optional parameter: If a recurring booking, the date of an instance to cancel.  Several formats are supported: '2014-10-31', 'October 31, 2014'
+    # @param [Date] end_date Optional parameter: If recurring, cancel up to :end_date or leave blank for infinite booking.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+    # @param [String] cancel_recurring Optional parameter: When a recurring booking, one of: ['instance', 'all', 'infinite']
+    # @return CancelBookingByIdResponse response from the API call
+    def cancel_booking_by_id(authorization, 
+                             id, 
+                             date = nil, 
+                             end_date = nil, 
+                             cancel_recurring = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/bookings/{id}'
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'id' => id
+      }
+      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
+        'date' => date,
+        'end_date' => end_date,
+        'cancel_recurring' => cancel_recurring
+      }, array_serialization: Configuration.array_serialization
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.delete _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CancelBookingByIdResponse.from_hash(decoded)
+    end
+
     # Return list of Bookings.
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [Integer] user_id Optional parameter: Retrieve Bookings for Resources/Services owned by this User Id.  You must be authorized to manage this User Id.
+    # @param [String] states Optional parameter: Comma-separated list of Booking states to retrieve only Bookings in those states.  Leave blank to retrieve all Bookings.
+    # @param [Integer] booker_id Optional parameter: Retrieve Bookings made by Booker Id.  Only Bookings for Services/Resources you are authorized to manage will be returned.
     # @param [Integer] page Optional parameter: Page offset to fetch.
     # @param [Integer] per_page Optional parameter: Number of results to return per page.
-    # @param [String] states Optional parameter: Comma-separated list of Booking states to retrieve only Bookings in those states.  Leave blank to retrieve all Bookings.
-    # @param [Integer] user_id Optional parameter: Retrieve Bookings owned only by this User Id.  You must be authorized to manage this User Id.
     # @return GetBookingsResponse response from the API call
     def get_bookings(authorization, 
-                     page = 1, 
-                     per_page = 10, 
+                     user_id = nil, 
                      states = nil, 
-                     user_id = nil)
+                     booker_id = nil, 
+                     page = 1, 
+                     per_page = 10)
 
       # prepare query url
       _query_builder = Configuration.get_base_uri()
       _query_builder << '/bookings'
       _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'page' => page,
-        'per_page' => per_page,
+        'user_id' => user_id,
         'states' => states,
-        'user_id' => user_id
+        'booker_id' => booker_id,
+        'page' => page,
+        'per_page' => per_page
       }, array_serialization: Configuration.array_serialization
       _query_url = APIHelper.clean_url _query_builder
 
@@ -59,96 +119,6 @@ module Gonebusy
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
       return GetBookingsResponse.from_hash(decoded)
-    end
-
-    # Create a Booking with params
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [CreateBookingBody] create_booking_body Optional parameter: the content of the request
-    # @return CreateBookingResponse response from the API call
-    def create_booking(authorization, 
-                       create_booking_body = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/bookings/new'
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'content-type' => 'application/json; charset=utf-8',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.post _query_url, headers: _headers, parameters: create_booking_body.to_json
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 422
-        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CreateBookingResponse.from_hash(decoded)
-    end
-
-    # Return a Booking by id.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [String] id Required parameter: Example: 
-    # @return GetBookingByIdResponse response from the API call
-    def get_booking_by_id(authorization, 
-                          id)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/bookings/{id}'
-      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
-        'id' => id
-      }
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetBookingByIdResponse.from_hash(decoded)
     end
 
     # Update a Booking by id
@@ -202,18 +172,12 @@ module Gonebusy
       return UpdateBookingByIdResponse.from_hash(decoded)
     end
 
-    # Cancel a Booking by id
+    # Return a Booking by id.
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
-    # @param [String] cancel_recurring Optional parameter: When a recurring booking, one of: ['instance', 'all', 'infinite']
-    # @param [Date] date Optional parameter: If a recurring booking, the date of an instance to cancel.  Several formats are supported: '2014-10-31', 'October 31, 2014'
-    # @param [Date] end_date Optional parameter: If recurring, cancel up to :end_date or leave blank for infinite booking.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-    # @return CancelBookingByIdResponse response from the API call
-    def cancel_booking_by_id(authorization, 
-                             id, 
-                             cancel_recurring = nil, 
-                             date = nil, 
-                             end_date = nil)
+    # @return GetBookingByIdResponse response from the API call
+    def get_booking_by_id(authorization, 
+                          id)
 
       # prepare query url
       _query_builder = Configuration.get_base_uri()
@@ -221,11 +185,6 @@ module Gonebusy
       _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
         'id' => id
       }
-      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'cancel_recurring' => cancel_recurring,
-        'date' => date,
-        'end_date' => end_date
-      }, array_serialization: Configuration.array_serialization
       _query_url = APIHelper.clean_url _query_builder
 
       # prepare headers
@@ -236,7 +195,7 @@ module Gonebusy
       }
 
       # prepare and execute HttpRequest
-      _request = @http_client.delete _query_url, headers: _headers
+      _request = @http_client.get _query_url, headers: _headers
       CustomAuth.apply(_request)
       _context = execute_request(_request)
 
@@ -256,7 +215,51 @@ module Gonebusy
 
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CancelBookingByIdResponse.from_hash(decoded)
+      return GetBookingByIdResponse.from_hash(decoded)
+    end
+
+    # Create a Booking with params
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [CreateBookingBody] create_booking_body Optional parameter: the content of the request
+    # @return CreateBookingResponse response from the API call
+    def create_booking(authorization, 
+                       create_booking_body = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/bookings/new'
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'content-type' => 'application/json; charset=utf-8',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.post _query_url, headers: _headers, parameters: create_booking_body.to_json
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 422
+        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CreateBookingResponse.from_hash(decoded)
     end
   end
 end

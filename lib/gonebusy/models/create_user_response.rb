@@ -8,11 +8,11 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["user"] = "user"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["user"] = "user"
       end
-      @hash
+      @_hash
     end
 
     def initialize(user = nil)
@@ -21,15 +21,13 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        user = EntitiesUserResponse.from_hash(hash['user']) if hash['user']
+      return nil unless hash
 
-        # Create object from extracted values
-        CreateUserResponse.new(user)
-      end
+      # Extract variables from the hash
+      user = EntitiesUserResponse.from_hash(hash['user']) if hash['user']
+
+      # Create object from extracted values
+      CreateUserResponse.new(user)
     end
   end
 end

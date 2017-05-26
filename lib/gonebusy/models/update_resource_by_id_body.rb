@@ -2,21 +2,21 @@
 
 module Gonebusy
   class UpdateResourceByIdBody < BaseModel
-    # Optional Capacity
-    # @return [Integer]
-    attr_accessor :capacity
+    # Resource Name
+    # @return [String]
+    attr_accessor :name
 
     # Optional Description
     # @return [String]
     attr_accessor :description
 
+    # Optional Capacity
+    # @return [Integer]
+    attr_accessor :capacity
+
     # Optional Gender
     # @return [GenderEnum]
     attr_accessor :gender
-
-    # Resource Name
-    # @return [String]
-    attr_accessor :name
 
     # When Resource is a Thing, the type Id
     # @return [Integer]
@@ -24,48 +24,46 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["capacity"] = "capacity"
-        @hash["description"] = "description"
-        @hash["gender"] = "gender"
-        @hash["name"] = "name"
-        @hash["thing_type_id"] = "thing_type_id"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["name"] = "name"
+        @_hash["description"] = "description"
+        @_hash["capacity"] = "capacity"
+        @_hash["gender"] = "gender"
+        @_hash["thing_type_id"] = "thing_type_id"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(capacity = nil,
+    def initialize(name = nil,
                    description = nil,
+                   capacity = nil,
                    gender = nil,
-                   name = nil,
                    thing_type_id = nil)
-      @capacity = capacity
-      @description = description
-      @gender = gender
       @name = name
+      @description = description
+      @capacity = capacity
+      @gender = gender
       @thing_type_id = thing_type_id
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        capacity = hash['capacity']
-        description = hash['description']
-        gender = hash['gender']
-        name = hash['name']
-        thing_type_id = hash['thing_type_id']
+      return nil unless hash
 
-        # Create object from extracted values
-        UpdateResourceByIdBody.new(capacity,
-                                   description,
-                                   gender,
-                                   name,
-                                   thing_type_id)
-      end
+      # Extract variables from the hash
+      name = hash['name']
+      description = hash['description']
+      capacity = hash['capacity']
+      gender = hash['gender']
+      thing_type_id = hash['thing_type_id']
+
+      # Create object from extracted values
+      UpdateResourceByIdBody.new(name,
+                                 description,
+                                 capacity,
+                                 gender,
+                                 thing_type_id)
     end
   end
 end

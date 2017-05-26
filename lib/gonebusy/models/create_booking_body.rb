@@ -2,25 +2,25 @@
 
 module Gonebusy
   class CreateBookingBody < BaseModel
-    # Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
-    # @return [Date]
-    attr_accessor :date
-
     # ID of Service being booked
     # @return [Integer]
     attr_accessor :service_id
+
+    # Desired date of booking.  Several formats are supported: "2014-10-31", "October 31, 2014"
+    # @return [Date]
+    attr_accessor :date
 
     # Desired time of booking.  Several formats are supported: '9am', '09:00', '9:00', '0900'
     # @return [String]
     attr_accessor :time
 
-    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
-    # @return [DateRecursByEnum]
-    attr_accessor :date_recurs_by
+    # Create a booking for this User Id.  You must be authorized to manage this User Id.
+    # @return [Integer]
+    attr_accessor :user_id
 
-    # List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
-    # @return [String]
-    attr_accessor :days
+    # ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
+    # @return [Integer]
+    attr_accessor :resource_id
 
     # Length of time, in minutes, for the desired booking - if Service allows requesting a variable amount of time
     # @return [Integer]
@@ -30,105 +30,103 @@ module Gonebusy
     # @return [Date]
     attr_accessor :end_date
 
+    # One of the possible recurrence values.  If not provided, assumed to be :once to indicate a single Booking.
+    # @return [RecursByEnum]
+    attr_accessor :recurs_by
+
     # Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc. If not provided, assumed to be :once
     # @return [FrequencyEnum]
     attr_accessor :frequency
+
+    # List of comma-separated days of the week this Booking falls on.  Useful for recurring Bookings.  If provided, at least one must be specified.
+    # @return [String]
+    attr_accessor :days
 
     # Optional occurrence of frequency. E.g, :first, :2nd, :last, :2nd_to_last, etc.  If not provided, assumed to be :every
     # @return [OccurrenceEnum]
     attr_accessor :occurrence
 
-    # One of the possible recurrence values.  If not provided, assumed to be :once to indicate a single Booking.
-    # @return [RecursByEnum]
-    attr_accessor :recurs_by
-
-    # ID of a Resource to be booked.  If not provided, the first available Resource will be booked.
-    # @return [Integer]
-    attr_accessor :resource_id
-
-    # Create a booking for this User Id.  You must be authorized to manage this User Id.
-    # @return [Integer]
-    attr_accessor :user_id
+    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Recurring Booking examples.
+    # @return [DateRecursByEnum]
+    attr_accessor :date_recurs_by
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["date"] = "date"
-        @hash["service_id"] = "service_id"
-        @hash["time"] = "time"
-        @hash["date_recurs_by"] = "date_recurs_by"
-        @hash["days"] = "days"
-        @hash["duration"] = "duration"
-        @hash["end_date"] = "end_date"
-        @hash["frequency"] = "frequency"
-        @hash["occurrence"] = "occurrence"
-        @hash["recurs_by"] = "recurs_by"
-        @hash["resource_id"] = "resource_id"
-        @hash["user_id"] = "user_id"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["service_id"] = "service_id"
+        @_hash["date"] = "date"
+        @_hash["time"] = "time"
+        @_hash["user_id"] = "user_id"
+        @_hash["resource_id"] = "resource_id"
+        @_hash["duration"] = "duration"
+        @_hash["end_date"] = "end_date"
+        @_hash["recurs_by"] = "recurs_by"
+        @_hash["frequency"] = "frequency"
+        @_hash["days"] = "days"
+        @_hash["occurrence"] = "occurrence"
+        @_hash["date_recurs_by"] = "date_recurs_by"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(date = nil,
-                   service_id = nil,
+    def initialize(service_id = nil,
+                   date = nil,
                    time = nil,
-                   date_recurs_by = nil,
-                   days = nil,
+                   user_id = nil,
+                   resource_id = nil,
                    duration = nil,
                    end_date = nil,
-                   frequency = nil,
-                   occurrence = nil,
                    recurs_by = nil,
-                   resource_id = nil,
-                   user_id = nil)
-      @date = date
+                   frequency = nil,
+                   days = nil,
+                   occurrence = nil,
+                   date_recurs_by = nil)
       @service_id = service_id
+      @date = date
       @time = time
-      @date_recurs_by = date_recurs_by
-      @days = days
+      @user_id = user_id
+      @resource_id = resource_id
       @duration = duration
       @end_date = end_date
-      @frequency = frequency
-      @occurrence = occurrence
       @recurs_by = recurs_by
-      @resource_id = resource_id
-      @user_id = user_id
+      @frequency = frequency
+      @days = days
+      @occurrence = occurrence
+      @date_recurs_by = date_recurs_by
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        date = hash['date']
-        service_id = hash['service_id']
-        time = hash['time']
-        date_recurs_by = hash['date_recurs_by']
-        days = hash['days']
-        duration = hash['duration']
-        end_date = hash['end_date']
-        frequency = hash['frequency']
-        occurrence = hash['occurrence']
-        recurs_by = hash['recurs_by']
-        resource_id = hash['resource_id']
-        user_id = hash['user_id']
+      return nil unless hash
 
-        # Create object from extracted values
-        CreateBookingBody.new(date,
-                              service_id,
-                              time,
-                              date_recurs_by,
-                              days,
-                              duration,
-                              end_date,
-                              frequency,
-                              occurrence,
-                              recurs_by,
-                              resource_id,
-                              user_id)
-      end
+      # Extract variables from the hash
+      service_id = hash['service_id']
+      date = hash['date']
+      time = hash['time']
+      user_id = hash['user_id']
+      resource_id = hash['resource_id']
+      duration = hash['duration']
+      end_date = hash['end_date']
+      recurs_by = hash['recurs_by']
+      frequency = hash['frequency']
+      days = hash['days']
+      occurrence = hash['occurrence']
+      date_recurs_by = hash['date_recurs_by']
+
+      # Create object from extracted values
+      CreateBookingBody.new(service_id,
+                            date,
+                            time,
+                            user_id,
+                            resource_id,
+                            duration,
+                            end_date,
+                            recurs_by,
+                            frequency,
+                            days,
+                            occurrence,
+                            date_recurs_by)
     end
   end
 end

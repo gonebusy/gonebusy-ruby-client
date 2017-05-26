@@ -12,12 +12,12 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["id"] = "id"
-        @hash["name"] = "name"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["name"] = "name"
       end
-      @hash
+      @_hash
     end
 
     def initialize(id = nil,
@@ -28,17 +28,15 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        id = hash['id']
-        name = hash['name']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesThingTypeResponse.new(id,
-                                      name)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      name = hash['name']
+
+      # Create object from extracted values
+      EntitiesThingTypeResponse.new(id,
+                                    name)
     end
   end
 end

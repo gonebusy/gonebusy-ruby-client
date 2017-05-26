@@ -24,15 +24,15 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["id"] = "id"
-        @hash["owner_id"] = "owner_id"
-        @hash["resource_id"] = "resource_id"
-        @hash["service_id"] = "service_id"
-        @hash["time_windows"] = "time_windows"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["resource_id"] = "resource_id"
+        @_hash["service_id"] = "service_id"
+        @_hash["time_windows"] = "time_windows"
       end
-      @hash
+      @_hash
     end
 
     def initialize(id = nil,
@@ -49,28 +49,26 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        id = hash['id']
-        owner_id = hash['owner_id']
-        resource_id = hash['resource_id']
-        service_id = hash['service_id']
-        # Parameter is an array, so we need to iterate through it
-        time_windows = nil
-        if hash['time_windows'] != nil
-          time_windows = Array.new
-          hash['time_windows'].each{|structure| time_windows << (EntitiesTimeWindowResponse.from_hash(structure) if structure)}
-        end
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesScheduleResponse.new(id,
-                                     owner_id,
-                                     resource_id,
-                                     service_id,
-                                     time_windows)
+      # Extract variables from the hash
+      id = hash['id']
+      owner_id = hash['owner_id']
+      resource_id = hash['resource_id']
+      service_id = hash['service_id']
+      # Parameter is an array, so we need to iterate through it
+      time_windows = nil
+      if hash['time_windows'] != nil
+        time_windows = Array.new
+        hash['time_windows'].each{|structure| time_windows << (EntitiesTimeWindowResponse.from_hash(structure) if structure)}
       end
+
+      # Create object from extracted values
+      EntitiesScheduleResponse.new(id,
+                                   owner_id,
+                                   resource_id,
+                                   service_id,
+                                   time_windows)
     end
   end
 end

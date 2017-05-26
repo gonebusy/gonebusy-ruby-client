@@ -8,255 +8,6 @@ module Gonebusy
       @@instance
     end
 
-    # Return all Schedules that your account has access to.  Includes Schedules for your own User as well as any Users for which you are the Account Manager.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [Integer] page Optional parameter: Page offset to fetch.
-    # @param [Integer] per_page Optional parameter: Number of results to return per page.
-    # @param [Integer] resource_id Optional parameter: Retrieve Schedules only for this Resource.  You, or provided :user_id, must be authorized to manage this Resource.
-    # @param [Integer] service_id Optional parameter: Retrieve Schedules only for this Service.  You, or provided :user_id, must be authorized to manage this Service.
-    # @param [Integer] user_id Optional parameter: Retrieve Schedules owned only by this User Id.  You must be authorized to manage this User Id.
-    # @return GetSchedulesResponse response from the API call
-    def get_schedules(authorization, 
-                      page = 1, 
-                      per_page = 10, 
-                      resource_id = nil, 
-                      service_id = nil, 
-                      user_id = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/schedules'
-      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'page' => page,
-        'per_page' => per_page,
-        'resource_id' => resource_id,
-        'service_id' => service_id,
-        'user_id' => user_id
-      }, array_serialization: Configuration.array_serialization
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetSchedulesResponse.from_hash(decoded)
-    end
-
-    # Create a Schedule with params.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [CreateScheduleBody] create_schedule_body Optional parameter: the content of the request
-    # @return CreateScheduleResponse response from the API call
-    def create_schedule(authorization, 
-                        create_schedule_body = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/schedules/new'
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'content-type' => 'application/json; charset=utf-8',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.post _query_url, headers: _headers, parameters: create_schedule_body.to_json
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif _context.response.status_code == 422
-        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CreateScheduleResponse.from_hash(decoded)
-    end
-
-    # Return a Schedule by id.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [String] id Required parameter: Example: 
-    # @return GetScheduleByIdResponse response from the API call
-    def get_schedule_by_id(authorization, 
-                           id)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/schedules/{id}'
-      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
-        'id' => id
-      }
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif _context.response.status_code == 410
-        raise EntitiesErrorErrorException.new 'Gone', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetScheduleByIdResponse.from_hash(decoded)
-    end
-
-    # Delete a Schedule
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [String] id Required parameter: Example: 
-    # @return DeleteScheduleByIdResponse response from the API call
-    def delete_schedule_by_id(authorization, 
-                              id)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/schedules/{id}'
-      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
-        'id' => id
-      }
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.delete _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return DeleteScheduleByIdResponse.from_hash(decoded)
-    end
-
-    # Add a TimeWindow to a Schedule.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [String] id Required parameter: Example: 
-    # @param [CreateScheduleTimeWindowBody] create_schedule_time_window_body Optional parameter: the content of the request
-    # @return CreateScheduleTimeWindowResponse response from the API call
-    def create_schedule_time_window(authorization, 
-                                    id, 
-                                    create_schedule_time_window_body = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/schedules/{id}/time_windows/new'
-      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
-        'id' => id
-      }
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'content-type' => 'application/json; charset=utf-8',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.post _query_url, headers: _headers, parameters: create_schedule_time_window_body.to_json
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif _context.response.status_code == 422
-        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CreateScheduleTimeWindowResponse.from_hash(decoded)
-    end
-
     # Update a TimeWindow for a Schedule.
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
@@ -311,6 +62,115 @@ module Gonebusy
       return UpdateScheduleTimeWindowByIdResponse.from_hash(decoded)
     end
 
+    # Add a TimeWindow to a Schedule.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] id Required parameter: Example: 
+    # @param [CreateScheduleTimeWindowBody] create_schedule_time_window_body Optional parameter: the content of the request
+    # @return CreateScheduleTimeWindowResponse response from the API call
+    def create_schedule_time_window(authorization, 
+                                    id, 
+                                    create_schedule_time_window_body = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/schedules/{id}/time_windows/new'
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'id' => id
+      }
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'content-type' => 'application/json; charset=utf-8',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.post _query_url, headers: _headers, parameters: create_schedule_time_window_body.to_json
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif _context.response.status_code == 422
+        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CreateScheduleTimeWindowResponse.from_hash(decoded)
+    end
+
+    # Return all Schedules that your account has access to.  Includes Schedules for your own User as well as any Users for which you are the Account Manager.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [Integer] user_id Optional parameter: Retrieve Schedules owned only by this User Id.  You must be authorized to manage this User Id.
+    # @param [Integer] resource_id Optional parameter: Retrieve Schedules only for this Resource.  You, or provided :user_id, must be authorized to manage this Resource.
+    # @param [Integer] service_id Optional parameter: Retrieve Schedules only for this Service.  You, or provided :user_id, must be authorized to manage this Service.
+    # @param [Integer] page Optional parameter: Page offset to fetch.
+    # @param [Integer] per_page Optional parameter: Number of results to return per page.
+    # @return GetSchedulesResponse response from the API call
+    def get_schedules(authorization, 
+                      user_id = nil, 
+                      resource_id = nil, 
+                      service_id = nil, 
+                      page = 1, 
+                      per_page = 10)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/schedules'
+      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
+        'user_id' => user_id,
+        'resource_id' => resource_id,
+        'service_id' => service_id,
+        'page' => page,
+        'per_page' => per_page
+      }, array_serialization: Configuration.array_serialization
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.get _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return GetSchedulesResponse.from_hash(decoded)
+    end
+
     # Delete a TimeWindow from a Schedule
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
@@ -358,6 +218,146 @@ module Gonebusy
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
       return DeleteScheduleTimeWindowByIdResponse.from_hash(decoded)
+    end
+
+    # Delete a Schedule
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] id Required parameter: Example: 
+    # @return DeleteScheduleByIdResponse response from the API call
+    def delete_schedule_by_id(authorization, 
+                              id)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/schedules/{id}'
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'id' => id
+      }
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.delete _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return DeleteScheduleByIdResponse.from_hash(decoded)
+    end
+
+    # Return a Schedule by id.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] id Required parameter: Example: 
+    # @return GetScheduleByIdResponse response from the API call
+    def get_schedule_by_id(authorization, 
+                           id)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/schedules/{id}'
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'id' => id
+      }
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.get _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif _context.response.status_code == 410
+        raise EntitiesErrorErrorException.new 'Gone', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return GetScheduleByIdResponse.from_hash(decoded)
+    end
+
+    # Create a Schedule with params.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [CreateScheduleBody] create_schedule_body Optional parameter: the content of the request
+    # @return CreateScheduleResponse response from the API call
+    def create_schedule(authorization, 
+                        create_schedule_body = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/schedules/new'
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'content-type' => 'application/json; charset=utf-8',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.post _query_url, headers: _headers, parameters: create_schedule_body.to_json
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif _context.response.status_code == 422
+        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CreateScheduleResponse.from_hash(decoded)
     end
   end
 end

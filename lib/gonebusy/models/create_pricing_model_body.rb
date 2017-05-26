@@ -10,9 +10,9 @@ module Gonebusy
     # @return [String]
     attr_accessor :type
 
-    # 3 Letter ISO Currency Code
-    # @return [String]
-    attr_accessor :currency
+    # Create a PricingModel for this User Id.  You must be authorized to manage this User Id.
+    # @return [Integer]
+    attr_accessor :user_id
 
     # Optional Notes Field
     # @return [String]
@@ -22,59 +22,57 @@ module Gonebusy
     # @return [Float]
     attr_accessor :price
 
-    # Create a PricingModel for this User Id.  You must be authorized to manage this User Id.
-    # @return [Integer]
-    attr_accessor :user_id
+    # 3 Letter ISO Currency Code
+    # @return [String]
+    attr_accessor :currency
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["name"] = "name"
-        @hash["type"] = "type"
-        @hash["currency"] = "currency"
-        @hash["notes"] = "notes"
-        @hash["price"] = "price"
-        @hash["user_id"] = "user_id"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["name"] = "name"
+        @_hash["type"] = "type"
+        @_hash["user_id"] = "user_id"
+        @_hash["notes"] = "notes"
+        @_hash["price"] = "price"
+        @_hash["currency"] = "currency"
       end
-      @hash
+      @_hash
     end
 
     def initialize(name = nil,
                    type = nil,
-                   currency = nil,
+                   user_id = nil,
                    notes = nil,
                    price = nil,
-                   user_id = nil)
+                   currency = nil)
       @name = name
       @type = type
-      @currency = currency
+      @user_id = user_id
       @notes = notes
       @price = price
-      @user_id = user_id
+      @currency = currency
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        name = hash['name']
-        type = hash['type']
-        currency = hash['currency']
-        notes = hash['notes']
-        price = hash['price']
-        user_id = hash['user_id']
+      return nil unless hash
 
-        # Create object from extracted values
-        CreatePricingModelBody.new(name,
-                                   type,
-                                   currency,
-                                   notes,
-                                   price,
-                                   user_id)
-      end
+      # Extract variables from the hash
+      name = hash['name']
+      type = hash['type']
+      user_id = hash['user_id']
+      notes = hash['notes']
+      price = hash['price']
+      currency = hash['currency']
+
+      # Create object from extracted values
+      CreatePricingModelBody.new(name,
+                                 type,
+                                 user_id,
+                                 notes,
+                                 price,
+                                 currency)
     end
   end
 end

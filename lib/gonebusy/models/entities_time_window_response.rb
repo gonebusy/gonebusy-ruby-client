@@ -2,6 +2,42 @@
 
 module Gonebusy
   class EntitiesTimeWindowResponse < BaseModel
+    # id of TimeWindow
+    # @return [Integer]
+    attr_accessor :id
+
+    # start date
+    # @return [Date]
+    attr_accessor :start_date
+
+    # end date
+    # @return [Date]
+    attr_accessor :end_date
+
+    # start time
+    # @return [String]
+    attr_accessor :start_time
+
+    # end time
+    # @return [String]
+    attr_accessor :end_time
+
+    # total minutes spanned
+    # @return [Integer]
+    attr_accessor :total_minutes
+
+    # recurs by
+    # @return [String]
+    attr_accessor :recurs_by
+
+    # frequency
+    # @return [String]
+    attr_accessor :frequency
+
+    # occurrence
+    # @return [String]
+    attr_accessor :occurrence
+
     # date_recurs_by
     # @return [String]
     attr_accessor :date_recurs_by
@@ -10,125 +46,87 @@ module Gonebusy
     # @return [List of String]
     attr_accessor :days
 
-    # end date
-    # @return [Date]
-    attr_accessor :end_date
-
-    # end time
-    # @return [String]
-    attr_accessor :end_time
-
-    # frequency
-    # @return [String]
-    attr_accessor :frequency
-
-    # id of TimeWindow
-    # @return [Integer]
-    attr_accessor :id
-
-    # occurrence
-    # @return [String]
-    attr_accessor :occurrence
-
-    # recurs by
-    # @return [String]
-    attr_accessor :recurs_by
-
-    # start date
-    # @return [Date]
-    attr_accessor :start_date
-
-    # start time
-    # @return [String]
-    attr_accessor :start_time
-
-    # total minutes spanned
-    # @return [Integer]
-    attr_accessor :total_minutes
-
     # true is available, false is unavailable
     # @return [Boolean]
     attr_accessor :unavailable
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["date_recurs_by"] = "date_recurs_by"
-        @hash["days"] = "days"
-        @hash["end_date"] = "end_date"
-        @hash["end_time"] = "end_time"
-        @hash["frequency"] = "frequency"
-        @hash["id"] = "id"
-        @hash["occurrence"] = "occurrence"
-        @hash["recurs_by"] = "recurs_by"
-        @hash["start_date"] = "start_date"
-        @hash["start_time"] = "start_time"
-        @hash["total_minutes"] = "total_minutes"
-        @hash["unavailable"] = "unavailable"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["start_date"] = "start_date"
+        @_hash["end_date"] = "end_date"
+        @_hash["start_time"] = "start_time"
+        @_hash["end_time"] = "end_time"
+        @_hash["total_minutes"] = "total_minutes"
+        @_hash["recurs_by"] = "recurs_by"
+        @_hash["frequency"] = "frequency"
+        @_hash["occurrence"] = "occurrence"
+        @_hash["date_recurs_by"] = "date_recurs_by"
+        @_hash["days"] = "days"
+        @_hash["unavailable"] = "unavailable"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(date_recurs_by = nil,
-                   days = nil,
-                   end_date = nil,
-                   end_time = nil,
-                   frequency = nil,
-                   id = nil,
-                   occurrence = nil,
-                   recurs_by = nil,
+    def initialize(id = nil,
                    start_date = nil,
+                   end_date = nil,
                    start_time = nil,
+                   end_time = nil,
                    total_minutes = nil,
+                   recurs_by = nil,
+                   frequency = nil,
+                   occurrence = nil,
+                   date_recurs_by = nil,
+                   days = nil,
                    unavailable = nil)
+      @id = id
+      @start_date = start_date
+      @end_date = end_date
+      @start_time = start_time
+      @end_time = end_time
+      @total_minutes = total_minutes
+      @recurs_by = recurs_by
+      @frequency = frequency
+      @occurrence = occurrence
       @date_recurs_by = date_recurs_by
       @days = days
-      @end_date = end_date
-      @end_time = end_time
-      @frequency = frequency
-      @id = id
-      @occurrence = occurrence
-      @recurs_by = recurs_by
-      @start_date = start_date
-      @start_time = start_time
-      @total_minutes = total_minutes
       @unavailable = unavailable
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        date_recurs_by = hash['date_recurs_by']
-        days = hash['days']
-        end_date = hash['end_date']
-        end_time = hash['end_time']
-        frequency = hash['frequency']
-        id = hash['id']
-        occurrence = hash['occurrence']
-        recurs_by = hash['recurs_by']
-        start_date = hash['start_date']
-        start_time = hash['start_time']
-        total_minutes = hash['total_minutes']
-        unavailable = hash['unavailable']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesTimeWindowResponse.new(date_recurs_by,
-                                       days,
-                                       end_date,
-                                       end_time,
-                                       frequency,
-                                       id,
-                                       occurrence,
-                                       recurs_by,
-                                       start_date,
-                                       start_time,
-                                       total_minutes,
-                                       unavailable)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      start_date = hash['start_date']
+      end_date = hash['end_date']
+      start_time = hash['start_time']
+      end_time = hash['end_time']
+      total_minutes = hash['total_minutes']
+      recurs_by = hash['recurs_by']
+      frequency = hash['frequency']
+      occurrence = hash['occurrence']
+      date_recurs_by = hash['date_recurs_by']
+      days = hash['days']
+      unavailable = hash['unavailable']
+
+      # Create object from extracted values
+      EntitiesTimeWindowResponse.new(id,
+                                     start_date,
+                                     end_date,
+                                     start_time,
+                                     end_time,
+                                     total_minutes,
+                                     recurs_by,
+                                     frequency,
+                                     occurrence,
+                                     date_recurs_by,
+                                     days,
+                                     unavailable)
     end
   end
 end

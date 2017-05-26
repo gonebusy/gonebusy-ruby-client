@@ -8,129 +8,19 @@ module Gonebusy
       @@instance
     end
 
-    # Return list of Services.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [Integer] page Optional parameter: Page offset to fetch.
-    # @param [Integer] per_page Optional parameter: Number of results to return per page.
-    # @param [Integer] user_id Optional parameter: Retrieve Services provided by the User specified by Id.  You must be authorized to manage this User Id.
-    # @return GetServicesResponse response from the API call
-    def get_services(authorization, 
-                     page = 1, 
-                     per_page = 10, 
-                     user_id = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/services'
-      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'page' => page,
-        'per_page' => per_page,
-        'user_id' => user_id
-      }, array_serialization: Configuration.array_serialization
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetServicesResponse.from_hash(decoded)
-    end
-
-    # Create a Service with params.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [CreateServiceBody] create_service_body Optional parameter: the content of the request
-    # @return CreateServiceResponse response from the API call
-    def create_service(authorization, 
-                       create_service_body = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/services/new'
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'content-type' => 'application/json; charset=utf-8',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.post _query_url, headers: _headers, parameters: create_service_body.to_json
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif _context.response.status_code == 422
-        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CreateServiceResponse.from_hash(decoded)
-    end
-
-    # Return available times for a Service.
+    # Delete a Service by id
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
-    # @param [Date] date Optional parameter: Date to check for availability.  Either this field or a date range employing start_date and end_date must be supplied.  If date is provided, start_date/end_date are ignored.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-    # @param [Date] end_date Optional parameter: End Date of a range to check for availability.  If supplied, date must not be supplied and start_date must be supplied.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-    # @param [Integer] resource_id Optional parameter: Retrieve available slots only for this Resource.  You must be authorized to manage this Resource.
-    # @param [Date] start_date Optional parameter: Start Date of a range to check for availability.  If supplied, date must not be supplied and end_date must be supplied.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
-    # @return GetServiceAvailableSlotsByIdResponse response from the API call
-    def get_service_available_slots_by_id(authorization, 
-                                          id, 
-                                          date = nil, 
-                                          end_date = nil, 
-                                          resource_id = nil, 
-                                          start_date = nil)
+    # @return DeleteServiceByIdResponse response from the API call
+    def delete_service_by_id(authorization, 
+                             id)
 
       # prepare query url
       _query_builder = Configuration.get_base_uri()
-      _query_builder << '/services/{id}/available_slots'
+      _query_builder << '/services/{id}'
       _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
         'id' => id
       }
-      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'date' => date,
-        'end_date' => end_date,
-        'resource_id' => resource_id,
-        'start_date' => start_date
-      }, array_serialization: Configuration.array_serialization
       _query_url = APIHelper.clean_url _query_builder
 
       # prepare headers
@@ -141,7 +31,7 @@ module Gonebusy
       }
 
       # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
+      _request = @http_client.delete _query_url, headers: _headers
       CustomAuth.apply(_request)
       _context = execute_request(_request)
 
@@ -161,7 +51,7 @@ module Gonebusy
 
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetServiceAvailableSlotsByIdResponse.from_hash(decoded)
+      return DeleteServiceByIdResponse.from_hash(decoded)
     end
 
     # Return a Service by id.
@@ -208,6 +98,52 @@ module Gonebusy
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
       return GetServiceByIdResponse.from_hash(decoded)
+    end
+
+    # Create a Service with params.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [CreateServiceBody] create_service_body Optional parameter: the content of the request
+    # @return CreateServiceResponse response from the API call
+    def create_service(authorization, 
+                       create_service_body = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/services/new'
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'content-type' => 'application/json; charset=utf-8',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.post _query_url, headers: _headers, parameters: create_service_body.to_json
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif _context.response.status_code == 422
+        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CreateServiceResponse.from_hash(decoded)
     end
 
     # Update a Service with params.
@@ -261,19 +197,33 @@ module Gonebusy
       return UpdateServiceByIdResponse.from_hash(decoded)
     end
 
-    # Delete a Service by id
+    # Return available times for a Service.
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
-    # @return DeleteServiceByIdResponse response from the API call
-    def delete_service_by_id(authorization, 
-                             id)
+    # @param [Date] date Optional parameter: Date to check for availability.  Either this field or a date range employing start_date and end_date must be supplied.  If date is provided, start_date/end_date are ignored.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+    # @param [Date] start_date Optional parameter: Start Date of a range to check for availability.  If supplied, date must not be supplied and end_date must be supplied.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+    # @param [Date] end_date Optional parameter: End Date of a range to check for availability.  If supplied, date must not be supplied and start_date must be supplied.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
+    # @param [Integer] resource_id Optional parameter: Retrieve available slots only for this Resource.  You must be authorized to manage this Resource.
+    # @return GetServiceAvailableSlotsByIdResponse response from the API call
+    def get_service_available_slots_by_id(authorization, 
+                                          id, 
+                                          date = nil, 
+                                          start_date = nil, 
+                                          end_date = nil, 
+                                          resource_id = nil)
 
       # prepare query url
       _query_builder = Configuration.get_base_uri()
-      _query_builder << '/services/{id}'
+      _query_builder << '/services/{id}/available_slots'
       _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
         'id' => id
       }
+      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
+        'date' => date,
+        'start_date' => start_date,
+        'end_date' => end_date,
+        'resource_id' => resource_id
+      }, array_serialization: Configuration.array_serialization
       _query_url = APIHelper.clean_url _query_builder
 
       # prepare headers
@@ -284,7 +234,7 @@ module Gonebusy
       }
 
       # prepare and execute HttpRequest
-      _request = @http_client.delete _query_url, headers: _headers
+      _request = @http_client.get _query_url, headers: _headers
       CustomAuth.apply(_request)
       _context = execute_request(_request)
 
@@ -304,7 +254,57 @@ module Gonebusy
 
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return DeleteServiceByIdResponse.from_hash(decoded)
+      return GetServiceAvailableSlotsByIdResponse.from_hash(decoded)
+    end
+
+    # Return list of Services.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [Integer] user_id Optional parameter: Retrieve Services provided by the User specified by Id.  You must be authorized to manage this User Id.
+    # @param [Integer] page Optional parameter: Page offset to fetch.
+    # @param [Integer] per_page Optional parameter: Number of results to return per page.
+    # @return GetServicesResponse response from the API call
+    def get_services(authorization, 
+                     user_id = nil, 
+                     page = 1, 
+                     per_page = 10)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/services'
+      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
+        'user_id' => user_id,
+        'page' => page,
+        'per_page' => per_page
+      }, array_serialization: Configuration.array_serialization
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.get _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return GetServicesResponse.from_hash(decoded)
     end
   end
 end
