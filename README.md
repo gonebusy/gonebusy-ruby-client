@@ -16,7 +16,7 @@ This client library is a Ruby gem which can be compiled and used in your Ruby an
 
 1. Open the command line interface or the terminal and navigate to the folder containing the source code.
 2. Run ``` gem build gonebusy.gemspec ``` to build the gem.
-3. Once built, the gem can be installed on the current work environment using ``` gem install gonebusy-0.0.9.gem ```
+3. Once built, the gem can be installed on the current work environment using ``` gem install gonebusy-0.1.1.gem ```
 
 ## How to Use
 
