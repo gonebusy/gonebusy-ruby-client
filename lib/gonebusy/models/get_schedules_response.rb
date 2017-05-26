@@ -8,11 +8,11 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["schedules"] = "schedules"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["schedules"] = "schedules"
       end
-      @hash
+      @_hash
     end
 
     def initialize(schedules = nil)
@@ -21,20 +21,18 @@ module Gonebusy
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        # Parameter is an array, so we need to iterate through it
-        schedules = nil
-        if hash['schedules'] != nil
-          schedules = Array.new
-          hash['schedules'].each{|structure| schedules << (EntitiesScheduleResponse.from_hash(structure) if structure)}
-        end
+      return nil unless hash
 
-        # Create object from extracted values
-        GetSchedulesResponse.new(schedules)
+      # Extract variables from the hash
+      # Parameter is an array, so we need to iterate through it
+      schedules = nil
+      if hash['schedules'] != nil
+        schedules = Array.new
+        hash['schedules'].each{|structure| schedules << (EntitiesScheduleResponse.from_hash(structure) if structure)}
       end
+
+      # Create object from extracted values
+      GetSchedulesResponse.new(schedules)
     end
   end
 end

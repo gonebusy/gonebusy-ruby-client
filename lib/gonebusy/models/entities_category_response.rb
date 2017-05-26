@@ -2,33 +2,33 @@
 
 module Gonebusy
   class EntitiesCategoryResponse < BaseModel
-    # description of Category
-    # @return [String]
-    attr_accessor :description
-
     # id of Category
     # @return [Integer]
     attr_accessor :id
-
-    # status of Category
-    # @return [Boolean]
-    attr_accessor :is_active
-
-    # extended name for Category
-    # @return [String]
-    attr_accessor :long_name
 
     # name of Category
     # @return [String]
     attr_accessor :name
 
+    # abbreviated name for Category
+    # @return [String]
+    attr_accessor :short_name
+
+    # extended name for Category
+    # @return [String]
+    attr_accessor :long_name
+
+    # description of Category
+    # @return [String]
+    attr_accessor :description
+
     # id of parent Category, if any
     # @return [Integer]
     attr_accessor :parent_category_id
 
-    # abbreviated name for Category
-    # @return [String]
-    attr_accessor :short_name
+    # status of Category
+    # @return [Boolean]
+    attr_accessor :is_active
 
     # array of subcategory ids, if any
     # @return [List of Integer]
@@ -36,63 +36,61 @@ module Gonebusy
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["description"] = "description"
-        @hash["id"] = "id"
-        @hash["is_active"] = "is_active"
-        @hash["long_name"] = "long_name"
-        @hash["name"] = "name"
-        @hash["parent_category_id"] = "parent_category_id"
-        @hash["short_name"] = "short_name"
-        @hash["subcategories"] = "subcategories"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["name"] = "name"
+        @_hash["short_name"] = "short_name"
+        @_hash["long_name"] = "long_name"
+        @_hash["description"] = "description"
+        @_hash["parent_category_id"] = "parent_category_id"
+        @_hash["is_active"] = "is_active"
+        @_hash["subcategories"] = "subcategories"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(description = nil,
-                   id = nil,
-                   is_active = nil,
-                   long_name = nil,
+    def initialize(id = nil,
                    name = nil,
-                   parent_category_id = nil,
                    short_name = nil,
+                   long_name = nil,
+                   description = nil,
+                   parent_category_id = nil,
+                   is_active = nil,
                    subcategories = nil)
-      @description = description
       @id = id
-      @is_active = is_active
-      @long_name = long_name
       @name = name
-      @parent_category_id = parent_category_id
       @short_name = short_name
+      @long_name = long_name
+      @description = description
+      @parent_category_id = parent_category_id
+      @is_active = is_active
       @subcategories = subcategories
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        description = hash['description']
-        id = hash['id']
-        is_active = hash['is_active']
-        long_name = hash['long_name']
-        name = hash['name']
-        parent_category_id = hash['parent_category_id']
-        short_name = hash['short_name']
-        subcategories = hash['subcategories']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesCategoryResponse.new(description,
-                                     id,
-                                     is_active,
-                                     long_name,
-                                     name,
-                                     parent_category_id,
-                                     short_name,
-                                     subcategories)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      name = hash['name']
+      short_name = hash['short_name']
+      long_name = hash['long_name']
+      description = hash['description']
+      parent_category_id = hash['parent_category_id']
+      is_active = hash['is_active']
+      subcategories = hash['subcategories']
+
+      # Create object from extracted values
+      EntitiesCategoryResponse.new(id,
+                                   name,
+                                   short_name,
+                                   long_name,
+                                   description,
+                                   parent_category_id,
+                                   is_active,
+                                   subcategories)
     end
   end
 end

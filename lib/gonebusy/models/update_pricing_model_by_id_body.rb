@@ -2,10 +2,6 @@
 
 module Gonebusy
   class UpdatePricingModelByIdBody < BaseModel
-    # 3 Letter ISO Currency Code
-    # @return [String]
-    attr_accessor :currency
-
     # PricingModel Name
     # @return [String]
     attr_accessor :name
@@ -18,45 +14,47 @@ module Gonebusy
     # @return [Float]
     attr_accessor :price
 
+    # 3 Letter ISO Currency Code
+    # @return [String]
+    attr_accessor :currency
+
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["currency"] = "currency"
-        @hash["name"] = "name"
-        @hash["notes"] = "notes"
-        @hash["price"] = "price"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["name"] = "name"
+        @_hash["notes"] = "notes"
+        @_hash["price"] = "price"
+        @_hash["currency"] = "currency"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(currency = nil,
-                   name = nil,
+    def initialize(name = nil,
                    notes = nil,
-                   price = nil)
-      @currency = currency
+                   price = nil,
+                   currency = nil)
       @name = name
       @notes = notes
       @price = price
+      @currency = currency
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        currency = hash['currency']
-        name = hash['name']
-        notes = hash['notes']
-        price = hash['price']
+      return nil unless hash
 
-        # Create object from extracted values
-        UpdatePricingModelByIdBody.new(currency,
-                                       name,
-                                       notes,
-                                       price)
-      end
+      # Extract variables from the hash
+      name = hash['name']
+      notes = hash['notes']
+      price = hash['price']
+      currency = hash['currency']
+
+      # Create object from extracted values
+      UpdatePricingModelByIdBody.new(name,
+                                     notes,
+                                     price,
+                                     currency)
     end
   end
 end

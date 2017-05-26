@@ -2,13 +2,13 @@
 
 module Gonebusy
   class EntitiesPricingModelResponse < BaseModel
-    # currency symbol, as per ISO-4217
-    # @return [String]
-    attr_accessor :currency
-
     # id of PricingModel
     # @return [Integer]
     attr_accessor :id
+
+    # id of owner of PricingModel
+    # @return [Integer]
+    attr_accessor :owner_id
 
     # name of PricingModel
     # @return [String]
@@ -18,72 +18,70 @@ module Gonebusy
     # @return [String]
     attr_accessor :notes
 
-    # id of owner of PricingModel
-    # @return [Integer]
-    attr_accessor :owner_id
+    # type of PricingModel
+    # @return [String]
+    attr_accessor :pricing_model_type
 
     # price/rate
     # @return [String]
     attr_accessor :price
 
-    # type of PricingModel
+    # currency symbol, as per ISO-4217
     # @return [String]
-    attr_accessor :pricing_model_type
+    attr_accessor :currency
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["currency"] = "currency"
-        @hash["id"] = "id"
-        @hash["name"] = "name"
-        @hash["notes"] = "notes"
-        @hash["owner_id"] = "owner_id"
-        @hash["price"] = "price"
-        @hash["pricing_model_type"] = "pricing_model_type"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["name"] = "name"
+        @_hash["notes"] = "notes"
+        @_hash["pricing_model_type"] = "pricing_model_type"
+        @_hash["price"] = "price"
+        @_hash["currency"] = "currency"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(currency = nil,
-                   id = nil,
+    def initialize(id = nil,
+                   owner_id = nil,
                    name = nil,
                    notes = nil,
-                   owner_id = nil,
+                   pricing_model_type = nil,
                    price = nil,
-                   pricing_model_type = nil)
-      @currency = currency
+                   currency = nil)
       @id = id
+      @owner_id = owner_id
       @name = name
       @notes = notes
-      @owner_id = owner_id
-      @price = price
       @pricing_model_type = pricing_model_type
+      @price = price
+      @currency = currency
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        currency = hash['currency']
-        id = hash['id']
-        name = hash['name']
-        notes = hash['notes']
-        owner_id = hash['owner_id']
-        price = hash['price']
-        pricing_model_type = hash['pricing_model_type']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesPricingModelResponse.new(currency,
-                                         id,
-                                         name,
-                                         notes,
-                                         owner_id,
-                                         price,
-                                         pricing_model_type)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      owner_id = hash['owner_id']
+      name = hash['name']
+      notes = hash['notes']
+      pricing_model_type = hash['pricing_model_type']
+      price = hash['price']
+      currency = hash['currency']
+
+      # Create object from extracted values
+      EntitiesPricingModelResponse.new(id,
+                                       owner_id,
+                                       name,
+                                       notes,
+                                       pricing_model_type,
+                                       price,
+                                       currency)
     end
   end
 end

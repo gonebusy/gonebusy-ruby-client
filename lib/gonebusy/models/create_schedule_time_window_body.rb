@@ -2,18 +2,6 @@
 
 module Gonebusy
   class CreateScheduleTimeWindowBody < BaseModel
-    # List of comma-separated days of the week this window of time falls on.  If provided, at least one must be specified.
-    # @return [String]
-    attr_accessor :days
-
-    # End Time of TimeWindow.  Several formats are supported: '5pm', '17:00', '1700'
-    # @return [String]
-    attr_accessor :end_time
-
-    # One of the possible recurrence values
-    # @return [RecursByEnum]
-    attr_accessor :recurs_by
-
     # Start Date of TimeWindow.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
     # @return [Date]
     attr_accessor :start_date
@@ -22,13 +10,25 @@ module Gonebusy
     # @return [String]
     attr_accessor :start_time
 
-    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Schedule examples.
-    # @return [DateRecursByEnum]
-    attr_accessor :date_recurs_by
+    # End Time of TimeWindow.  Several formats are supported: '5pm', '17:00', '1700'
+    # @return [String]
+    attr_accessor :end_time
+
+    # List of comma-separated days of the week this window of time falls on.  If provided, at least one must be specified.
+    # @return [String]
+    attr_accessor :days
+
+    # One of the possible recurrence values
+    # @return [RecursByEnum]
+    attr_accessor :recurs_by
 
     # Optional End Date of TimeWindow, leave blank for infinitely available.  Several formats are supported: '2014-10-31', 'October 31, 2014'.
     # @return [Date]
     attr_accessor :end_date
+
+    # Optional total number of minutes in TimeWindow.  Useful when duration of window is greater than 24 hours.
+    # @return [Integer]
+    attr_accessor :total_minutes
 
     # Optional frequency of recurrence as specified by :recurs_by.  E.g, :single, :every, :every_other, etc. If not provided, assumed to be :every
     # @return [FrequencyEnum]
@@ -38,79 +38,77 @@ module Gonebusy
     # @return [OccurrenceEnum]
     attr_accessor :occurrence
 
-    # Optional total number of minutes in TimeWindow.  Useful when duration of window is greater than 24 hours.
-    # @return [Integer]
-    attr_accessor :total_minutes
+    # Required only when :recurs_by is 'monthly' or 'yearly' to differentiate between exact date or 'day in month/year'.  See Schedule examples.
+    # @return [DateRecursByEnum]
+    attr_accessor :date_recurs_by
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["days"] = "days"
-        @hash["end_time"] = "end_time"
-        @hash["recurs_by"] = "recurs_by"
-        @hash["start_date"] = "start_date"
-        @hash["start_time"] = "start_time"
-        @hash["date_recurs_by"] = "date_recurs_by"
-        @hash["end_date"] = "end_date"
-        @hash["frequency"] = "frequency"
-        @hash["occurrence"] = "occurrence"
-        @hash["total_minutes"] = "total_minutes"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["start_date"] = "start_date"
+        @_hash["start_time"] = "start_time"
+        @_hash["end_time"] = "end_time"
+        @_hash["days"] = "days"
+        @_hash["recurs_by"] = "recurs_by"
+        @_hash["end_date"] = "end_date"
+        @_hash["total_minutes"] = "total_minutes"
+        @_hash["frequency"] = "frequency"
+        @_hash["occurrence"] = "occurrence"
+        @_hash["date_recurs_by"] = "date_recurs_by"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(days = nil,
-                   end_time = nil,
-                   recurs_by = nil,
-                   start_date = nil,
+    def initialize(start_date = nil,
                    start_time = nil,
-                   date_recurs_by = nil,
+                   end_time = nil,
+                   days = nil,
+                   recurs_by = nil,
                    end_date = nil,
+                   total_minutes = nil,
                    frequency = nil,
                    occurrence = nil,
-                   total_minutes = nil)
-      @days = days
-      @end_time = end_time
-      @recurs_by = recurs_by
+                   date_recurs_by = nil)
       @start_date = start_date
       @start_time = start_time
-      @date_recurs_by = date_recurs_by
+      @end_time = end_time
+      @days = days
+      @recurs_by = recurs_by
       @end_date = end_date
+      @total_minutes = total_minutes
       @frequency = frequency
       @occurrence = occurrence
-      @total_minutes = total_minutes
+      @date_recurs_by = date_recurs_by
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        days = hash['days']
-        end_time = hash['end_time']
-        recurs_by = hash['recurs_by']
-        start_date = hash['start_date']
-        start_time = hash['start_time']
-        date_recurs_by = hash['date_recurs_by']
-        end_date = hash['end_date']
-        frequency = hash['frequency']
-        occurrence = hash['occurrence']
-        total_minutes = hash['total_minutes']
+      return nil unless hash
 
-        # Create object from extracted values
-        CreateScheduleTimeWindowBody.new(days,
-                                         end_time,
-                                         recurs_by,
-                                         start_date,
-                                         start_time,
-                                         date_recurs_by,
-                                         end_date,
-                                         frequency,
-                                         occurrence,
-                                         total_minutes)
-      end
+      # Extract variables from the hash
+      start_date = hash['start_date']
+      start_time = hash['start_time']
+      end_time = hash['end_time']
+      days = hash['days']
+      recurs_by = hash['recurs_by']
+      end_date = hash['end_date']
+      total_minutes = hash['total_minutes']
+      frequency = hash['frequency']
+      occurrence = hash['occurrence']
+      date_recurs_by = hash['date_recurs_by']
+
+      # Create object from extracted values
+      CreateScheduleTimeWindowBody.new(start_date,
+                                       start_time,
+                                       end_time,
+                                       days,
+                                       recurs_by,
+                                       end_date,
+                                       total_minutes,
+                                       frequency,
+                                       occurrence,
+                                       date_recurs_by)
     end
   end
 end

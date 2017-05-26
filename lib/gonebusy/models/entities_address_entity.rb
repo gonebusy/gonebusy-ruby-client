@@ -2,9 +2,29 @@
 
 module Gonebusy
   class EntitiesAddressEntity < BaseModel
+    # line 1 of Address
+    # @return [String]
+    attr_accessor :line_1
+
+    # line 2 of Address
+    # @return [String]
+    attr_accessor :line_2
+
     # city of Address
     # @return [String]
     attr_accessor :city
+
+    # state of Address
+    # @return [String]
+    attr_accessor :state
+
+    # province of Address
+    # @return [String]
+    attr_accessor :province
+
+    # postal code of Address
+    # @return [String]
+    attr_accessor :postal_code
 
     # country of Address
     # @return [String]
@@ -18,99 +38,77 @@ module Gonebusy
     # @return [String]
     attr_accessor :latitude
 
-    # line 1 of Address
-    # @return [String]
-    attr_accessor :line_1
-
-    # line 2 of Address
-    # @return [String]
-    attr_accessor :line_2
-
     # longitude of Address
     # @return [String]
     attr_accessor :longitude
 
-    # postal code of Address
-    # @return [String]
-    attr_accessor :postal_code
-
-    # province of Address
-    # @return [String]
-    attr_accessor :province
-
-    # state of Address
-    # @return [String]
-    attr_accessor :state
-
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["city"] = "city"
-        @hash["country"] = "country"
-        @hash["country_code"] = "country_code"
-        @hash["latitude"] = "latitude"
-        @hash["line_1"] = "line1"
-        @hash["line_2"] = "line2"
-        @hash["longitude"] = "longitude"
-        @hash["postal_code"] = "postal_code"
-        @hash["province"] = "province"
-        @hash["state"] = "state"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["line_1"] = "line1"
+        @_hash["line_2"] = "line2"
+        @_hash["city"] = "city"
+        @_hash["state"] = "state"
+        @_hash["province"] = "province"
+        @_hash["postal_code"] = "postal_code"
+        @_hash["country"] = "country"
+        @_hash["country_code"] = "country_code"
+        @_hash["latitude"] = "latitude"
+        @_hash["longitude"] = "longitude"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(city = nil,
+    def initialize(line_1 = nil,
+                   line_2 = nil,
+                   city = nil,
+                   state = nil,
+                   province = nil,
+                   postal_code = nil,
                    country = nil,
                    country_code = nil,
                    latitude = nil,
-                   line_1 = nil,
-                   line_2 = nil,
-                   longitude = nil,
-                   postal_code = nil,
-                   province = nil,
-                   state = nil)
+                   longitude = nil)
+      @line_1 = line_1
+      @line_2 = line_2
       @city = city
+      @state = state
+      @province = province
+      @postal_code = postal_code
       @country = country
       @country_code = country_code
       @latitude = latitude
-      @line_1 = line_1
-      @line_2 = line_2
       @longitude = longitude
-      @postal_code = postal_code
-      @province = province
-      @state = state
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        city = hash['city']
-        country = hash['country']
-        country_code = hash['country_code']
-        latitude = hash['latitude']
-        line_1 = hash['line1']
-        line_2 = hash['line2']
-        longitude = hash['longitude']
-        postal_code = hash['postal_code']
-        province = hash['province']
-        state = hash['state']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesAddressEntity.new(city,
-                                  country,
-                                  country_code,
-                                  latitude,
-                                  line_1,
-                                  line_2,
-                                  longitude,
-                                  postal_code,
-                                  province,
-                                  state)
-      end
+      # Extract variables from the hash
+      line_1 = hash['line1']
+      line_2 = hash['line2']
+      city = hash['city']
+      state = hash['state']
+      province = hash['province']
+      postal_code = hash['postal_code']
+      country = hash['country']
+      country_code = hash['country_code']
+      latitude = hash['latitude']
+      longitude = hash['longitude']
+
+      # Create object from extracted values
+      EntitiesAddressEntity.new(line_1,
+                                line_2,
+                                city,
+                                state,
+                                province,
+                                postal_code,
+                                country,
+                                country_code,
+                                latitude,
+                                longitude)
     end
   end
 end

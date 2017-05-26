@@ -2,9 +2,9 @@
 
 module Gonebusy
   class UpdateServiceByIdBody < BaseModel
-    # Optional List of comma-separated Category IDs to associate with Service
+    # Service Name
     # @return [String]
-    attr_accessor :categories
+    attr_accessor :name
 
     # Service Description
     # @return [String]
@@ -18,9 +18,9 @@ module Gonebusy
     # @return [Integer]
     attr_accessor :max_duration
 
-    # Service Name
+    # Optional abbreviated Service name
     # @return [String]
-    attr_accessor :name
+    attr_accessor :short_name
 
     # Optional Price Model Id
     # @return [Integer]
@@ -30,69 +30,67 @@ module Gonebusy
     # @return [String]
     attr_accessor :resources
 
-    # Optional abbreviated Service name
+    # Optional List of comma-separated Category IDs to associate with Service
     # @return [String]
-    attr_accessor :short_name
+    attr_accessor :categories
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["categories"] = "categories"
-        @hash["description"] = "description"
-        @hash["duration"] = "duration"
-        @hash["max_duration"] = "max_duration"
-        @hash["name"] = "name"
-        @hash["price_model_id"] = "price_model_id"
-        @hash["resources"] = "resources"
-        @hash["short_name"] = "short_name"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["name"] = "name"
+        @_hash["description"] = "description"
+        @_hash["duration"] = "duration"
+        @_hash["max_duration"] = "max_duration"
+        @_hash["short_name"] = "short_name"
+        @_hash["price_model_id"] = "price_model_id"
+        @_hash["resources"] = "resources"
+        @_hash["categories"] = "categories"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(categories = nil,
+    def initialize(name = nil,
                    description = nil,
                    duration = nil,
                    max_duration = nil,
-                   name = nil,
+                   short_name = nil,
                    price_model_id = nil,
                    resources = nil,
-                   short_name = nil)
-      @categories = categories
+                   categories = nil)
+      @name = name
       @description = description
       @duration = duration
       @max_duration = max_duration
-      @name = name
+      @short_name = short_name
       @price_model_id = price_model_id
       @resources = resources
-      @short_name = short_name
+      @categories = categories
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        categories = hash['categories']
-        description = hash['description']
-        duration = hash['duration']
-        max_duration = hash['max_duration']
-        name = hash['name']
-        price_model_id = hash['price_model_id']
-        resources = hash['resources']
-        short_name = hash['short_name']
+      return nil unless hash
 
-        # Create object from extracted values
-        UpdateServiceByIdBody.new(categories,
-                                  description,
-                                  duration,
-                                  max_duration,
-                                  name,
-                                  price_model_id,
-                                  resources,
-                                  short_name)
-      end
+      # Extract variables from the hash
+      name = hash['name']
+      description = hash['description']
+      duration = hash['duration']
+      max_duration = hash['max_duration']
+      short_name = hash['short_name']
+      price_model_id = hash['price_model_id']
+      resources = hash['resources']
+      categories = hash['categories']
+
+      # Create object from extracted values
+      UpdateServiceByIdBody.new(name,
+                                description,
+                                duration,
+                                max_duration,
+                                short_name,
+                                price_model_id,
+                                resources,
+                                categories)
     end
   end
 end

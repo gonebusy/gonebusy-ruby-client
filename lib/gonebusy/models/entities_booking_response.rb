@@ -10,62 +10,60 @@ module Gonebusy
     # @return [Integer]
     attr_accessor :owner_id
 
-    # TimeWindow corresponding to Booking
-    # @return [EntitiesTimeWindowResponse]
-    attr_accessor :time_window
+    # status of Booking
+    # @return [String]
+    attr_accessor :workflow_state
 
     # user requesting Booking may include a message
     # @return [String]
     attr_accessor :user_message
 
-    # status of Booking
-    # @return [String]
-    attr_accessor :workflow_state
+    # TimeWindow corresponding to Booking
+    # @return [EntitiesTimeWindowResponse]
+    attr_accessor :time_window
 
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["id"] = "id"
-        @hash["owner_id"] = "owner_id"
-        @hash["time_window"] = "time_window"
-        @hash["user_message"] = "user_message"
-        @hash["workflow_state"] = "workflow_state"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["workflow_state"] = "workflow_state"
+        @_hash["user_message"] = "user_message"
+        @_hash["time_window"] = "time_window"
       end
-      @hash
+      @_hash
     end
 
     def initialize(id = nil,
                    owner_id = nil,
-                   time_window = nil,
+                   workflow_state = nil,
                    user_message = nil,
-                   workflow_state = nil)
+                   time_window = nil)
       @id = id
       @owner_id = owner_id
-      @time_window = time_window
-      @user_message = user_message
       @workflow_state = workflow_state
+      @user_message = user_message
+      @time_window = time_window
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        id = hash['id']
-        owner_id = hash['owner_id']
-        time_window = EntitiesTimeWindowResponse.from_hash(hash['time_window']) if hash['time_window']
-        user_message = hash['user_message']
-        workflow_state = hash['workflow_state']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesBookingResponse.new(id,
-                                    owner_id,
-                                    time_window,
-                                    user_message,
-                                    workflow_state)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      owner_id = hash['owner_id']
+      workflow_state = hash['workflow_state']
+      user_message = hash['user_message']
+      time_window = EntitiesTimeWindowResponse.from_hash(hash['time_window']) if hash['time_window']
+
+      # Create object from extracted values
+      EntitiesBookingResponse.new(id,
+                                  owner_id,
+                                  workflow_state,
+                                  user_message,
+                                  time_window)
     end
   end
 end

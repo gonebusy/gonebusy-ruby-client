@@ -2,41 +2,45 @@
 
 module Gonebusy
   class EntitiesServiceResponse < BaseModel
-    # array of Category ids Service belongs to
-    # @return [List of Integer]
-    attr_accessor :categories
-
-    # description of Service
-    # @return [String]
-    attr_accessor :description
-
-    # length of Service in minutes
-    # @return [Integer]
-    attr_accessor :duration
-
     # id of Service
     # @return [Integer]
     attr_accessor :id
-
-    # status of Service
-    # @return [Boolean]
-    attr_accessor :is_active
-
-    # max length of Service in minutes
-    # @return [Integer]
-    attr_accessor :max_duration
-
-    # name of Service
-    # @return [String]
-    attr_accessor :name
 
     # id of owner of Service
     # @return [Integer]
     attr_accessor :owner_id
 
+    # name of Service
+    # @return [String]
+    attr_accessor :name
+
+    # abbreviated name for Service
+    # @return [String]
+    attr_accessor :short_name
+
+    # length of Service in minutes
+    # @return [Integer]
+    attr_accessor :duration
+
+    # max length of Service in minutes
+    # @return [Integer]
+    attr_accessor :max_duration
+
+    # description of Service
+    # @return [String]
+    attr_accessor :description
+
     # id of Pricing Model
     # @return [Integer]
     attr_accessor :price_model_id
+
+    # status of Service
+    # @return [Boolean]
+    attr_accessor :is_active
+
+    # array of Category ids Service belongs to
+    # @return [List of Integer]
+    attr_accessor :categories
 
     # array of Resource ids offering Service
     # @return [List of Integer]
@@ -46,89 +50,83 @@ module Gonebusy
     # @return [List of Integer]
     attr_accessor :schedules
 
-    # abbreviated name for Service
-    # @return [String]
-    attr_accessor :short_name
-
     # A mapping from model property names to API property names
     def self.names
-      if @hash.nil?
-        @hash = {}
-        @hash["categories"] = "categories"
-        @hash["description"] = "description"
-        @hash["duration"] = "duration"
-        @hash["id"] = "id"
-        @hash["is_active"] = "is_active"
-        @hash["max_duration"] = "max_duration"
-        @hash["name"] = "name"
-        @hash["owner_id"] = "owner_id"
-        @hash["price_model_id"] = "price_model_id"
-        @hash["resources"] = "resources"
-        @hash["schedules"] = "schedules"
-        @hash["short_name"] = "short_name"
+      if @_hash.nil?
+        @_hash = {}
+        @_hash["id"] = "id"
+        @_hash["owner_id"] = "owner_id"
+        @_hash["name"] = "name"
+        @_hash["short_name"] = "short_name"
+        @_hash["duration"] = "duration"
+        @_hash["max_duration"] = "max_duration"
+        @_hash["description"] = "description"
+        @_hash["price_model_id"] = "price_model_id"
+        @_hash["is_active"] = "is_active"
+        @_hash["categories"] = "categories"
+        @_hash["resources"] = "resources"
+        @_hash["schedules"] = "schedules"
       end
-      @hash
+      @_hash
     end
 
-    def initialize(categories = nil,
-                   description = nil,
-                   duration = nil,
-                   id = nil,
-                   is_active = nil,
-                   max_duration = nil,
-                   name = nil,
+    def initialize(id = nil,
                    owner_id = nil,
+                   name = nil,
+                   short_name = nil,
+                   duration = nil,
+                   max_duration = nil,
+                   description = nil,
                    price_model_id = nil,
+                   is_active = nil,
+                   categories = nil,
                    resources = nil,
-                   schedules = nil,
-                   short_name = nil)
-      @categories = categories
-      @description = description
-      @duration = duration
+                   schedules = nil)
       @id = id
-      @is_active = is_active
-      @max_duration = max_duration
-      @name = name
       @owner_id = owner_id
+      @name = name
+      @short_name = short_name
+      @duration = duration
+      @max_duration = max_duration
+      @description = description
       @price_model_id = price_model_id
+      @is_active = is_active
+      @categories = categories
       @resources = resources
       @schedules = schedules
-      @short_name = short_name
     end
 
     # Creates an instance of the object from a hash
     def self.from_hash(hash)
-      if hash == nil
-        nil
-      else
-        # Extract variables from the hash
-        categories = hash['categories']
-        description = hash['description']
-        duration = hash['duration']
-        id = hash['id']
-        is_active = hash['is_active']
-        max_duration = hash['max_duration']
-        name = hash['name']
-        owner_id = hash['owner_id']
-        price_model_id = hash['price_model_id']
-        resources = hash['resources']
-        schedules = hash['schedules']
-        short_name = hash['short_name']
+      return nil unless hash
 
-        # Create object from extracted values
-        EntitiesServiceResponse.new(categories,
-                                    description,
-                                    duration,
-                                    id,
-                                    is_active,
-                                    max_duration,
-                                    name,
-                                    owner_id,
-                                    price_model_id,
-                                    resources,
-                                    schedules,
-                                    short_name)
-      end
+      # Extract variables from the hash
+      id = hash['id']
+      owner_id = hash['owner_id']
+      name = hash['name']
+      short_name = hash['short_name']
+      duration = hash['duration']
+      max_duration = hash['max_duration']
+      description = hash['description']
+      price_model_id = hash['price_model_id']
+      is_active = hash['is_active']
+      categories = hash['categories']
+      resources = hash['resources']
+      schedules = hash['schedules']
+
+      # Create object from extracted values
+      EntitiesServiceResponse.new(id,
+                                  owner_id,
+                                  name,
+                                  short_name,
+                                  duration,
+                                  max_duration,
+                                  description,
+                                  price_model_id,
+                                  is_active,
+                                  categories,
+                                  resources,
+                                  schedules)
     end
   end
 end

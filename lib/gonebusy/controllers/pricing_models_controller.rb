@@ -8,146 +8,6 @@ module Gonebusy
       @@instance
     end
 
-    # Return list of PricingModels.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [Integer] page Optional parameter: Page offset to fetch.
-    # @param [Integer] per_page Optional parameter: Number of results to return per page.
-    # @param [Integer] user_id Optional parameter: Retrieve PricingModels owned only by this User Id.  You must be authorized to manage this User Id.
-    # @return GetPricingModelsResponse response from the API call
-    def get_pricing_models(authorization, 
-                           page = 1, 
-                           per_page = 10, 
-                           user_id = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/pricing_models'
-      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
-        'page' => page,
-        'per_page' => per_page,
-        'user_id' => user_id
-      }, array_serialization: Configuration.array_serialization
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetPricingModelsResponse.from_hash(decoded)
-    end
-
-    # Create a PricingModel with params
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [CreatePricingModelBody] create_pricing_model_body Optional parameter: the content of the request
-    # @return CreatePricingModelResponse response from the API call
-    def create_pricing_model(authorization, 
-                             create_pricing_model_body = nil)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/pricing_models/new'
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'content-type' => 'application/json; charset=utf-8',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.post _query_url, headers: _headers, parameters: create_pricing_model_body.to_json
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 422
-        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return CreatePricingModelResponse.from_hash(decoded)
-    end
-
-    # Return a PricingModel by id.
-    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
-    # @param [String] id Required parameter: Example: 
-    # @return GetPricingModelByIdResponse response from the API call
-    def get_pricing_model_by_id(authorization, 
-                                id)
-
-      # prepare query url
-      _query_builder = Configuration.get_base_uri()
-      _query_builder << '/pricing_models/{id}'
-      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
-        'id' => id
-      }
-      _query_url = APIHelper.clean_url _query_builder
-
-      # prepare headers
-      _headers = {
-        'accept' => 'application/json',
-        'Authorization' => Configuration.authorization,
-        'Authorization' => authorization
-      }
-
-      # prepare and execute HttpRequest
-      _request = @http_client.get _query_url, headers: _headers
-      CustomAuth.apply(_request)
-      _context = execute_request(_request)
-
-      # validate response against endpoint and global error codes
-      if _context.response.status_code == 400
-        raise EntitiesErrorErrorException.new 'Bad Request', _context
-      elsif _context.response.status_code == 401
-        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
-      elsif _context.response.status_code == 403
-        raise EntitiesErrorErrorException.new 'Forbidden', _context
-      elsif _context.response.status_code == 404
-        raise EntitiesErrorErrorException.new 'Not Found', _context
-      elsif !_context.response.status_code.between?(200, 208)
-        raise APIException.new 'Unexpected error', _context
-      end
-      validate_response(_context)
-
-      # return appropriate response type
-      decoded = APIHelper.json_deserialize(_context.response.raw_body)
-      return GetPricingModelByIdResponse.from_hash(decoded)
-    end
-
     # Update a PricingModel by id, with params
     # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
     # @param [String] id Required parameter: Example: 
@@ -197,6 +57,146 @@ module Gonebusy
       # return appropriate response type
       decoded = APIHelper.json_deserialize(_context.response.raw_body)
       return UpdatePricingModelByIdResponse.from_hash(decoded)
+    end
+
+    # Return list of PricingModels.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [Integer] user_id Optional parameter: Retrieve PricingModels owned only by this User Id.  You must be authorized to manage this User Id.
+    # @param [Integer] page Optional parameter: Page offset to fetch.
+    # @param [Integer] per_page Optional parameter: Number of results to return per page.
+    # @return GetPricingModelsResponse response from the API call
+    def get_pricing_models(authorization, 
+                           user_id = nil, 
+                           page = 1, 
+                           per_page = 10)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/pricing_models'
+      _query_builder = APIHelper.append_url_with_query_parameters _query_builder, {
+        'user_id' => user_id,
+        'page' => page,
+        'per_page' => per_page
+      }, array_serialization: Configuration.array_serialization
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.get _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return GetPricingModelsResponse.from_hash(decoded)
+    end
+
+    # Return a PricingModel by id.
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [String] id Required parameter: Example: 
+    # @return GetPricingModelByIdResponse response from the API call
+    def get_pricing_model_by_id(authorization, 
+                                id)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/pricing_models/{id}'
+      _query_builder = APIHelper.append_url_with_template_parameters _query_builder, {
+        'id' => id
+      }
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.get _query_url, headers: _headers
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 404
+        raise EntitiesErrorErrorException.new 'Not Found', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return GetPricingModelByIdResponse.from_hash(decoded)
+    end
+
+    # Create a PricingModel with params
+    # @param [String] authorization Required parameter: A valid API key, in the format 'Token API_KEY'
+    # @param [CreatePricingModelBody] create_pricing_model_body Optional parameter: the content of the request
+    # @return CreatePricingModelResponse response from the API call
+    def create_pricing_model(authorization, 
+                             create_pricing_model_body = nil)
+
+      # prepare query url
+      _query_builder = Configuration.get_base_uri()
+      _query_builder << '/pricing_models/new'
+      _query_url = APIHelper.clean_url _query_builder
+
+      # prepare headers
+      _headers = {
+        'accept' => 'application/json',
+        'content-type' => 'application/json; charset=utf-8',
+        'Authorization' => Configuration.authorization,
+        'Authorization' => authorization
+      }
+
+      # prepare and execute HttpRequest
+      _request = @http_client.post _query_url, headers: _headers, parameters: create_pricing_model_body.to_json
+      CustomAuth.apply(_request)
+      _context = execute_request(_request)
+
+      # validate response against endpoint and global error codes
+      if _context.response.status_code == 400
+        raise EntitiesErrorErrorException.new 'Bad Request', _context
+      elsif _context.response.status_code == 401
+        raise EntitiesErrorErrorException.new 'Unauthorized/Missing Token', _context
+      elsif _context.response.status_code == 403
+        raise EntitiesErrorErrorException.new 'Forbidden', _context
+      elsif _context.response.status_code == 422
+        raise EntitiesErrorErrorException.new 'Unprocessable Entity', _context
+      elsif !_context.response.status_code.between?(200, 208)
+        raise APIException.new 'Unexpected error', _context
+      end
+      validate_response(_context)
+
+      # return appropriate response type
+      decoded = APIHelper.json_deserialize(_context.response.raw_body)
+      return CreatePricingModelResponse.from_hash(decoded)
     end
   end
 end
