@@ -22,6 +22,14 @@ module Gonebusy
     # @return [EntitiesTimeWindowResponse]
     attr_accessor :time_window
 
+    # id of Resource performing Booking
+    # @return [Integer]
+    attr_accessor :resource_id
+
+    # id of Service booked
+    # @return [Integer]
+    attr_accessor :service_id
+
     # A mapping from model property names to API property names
     def self.names
       if @_hash.nil?
@@ -31,6 +39,8 @@ module Gonebusy
         @_hash["workflow_state"] = "workflow_state"
         @_hash["user_message"] = "user_message"
         @_hash["time_window"] = "time_window"
+        @_hash["resource_id"] = "resource_id"
+        @_hash["service_id"] = "service_id"
       end
       @_hash
     end
@@ -39,12 +49,16 @@ module Gonebusy
                    owner_id = nil,
                    workflow_state = nil,
                    user_message = nil,
-                   time_window = nil)
+                   time_window = nil,
+                   resource_id = nil,
+                   service_id = nil)
       @id = id
       @owner_id = owner_id
       @workflow_state = workflow_state
       @user_message = user_message
       @time_window = time_window
+      @resource_id = resource_id
+      @service_id = service_id
     end
 
     # Creates an instance of the object from a hash
@@ -57,13 +71,17 @@ module Gonebusy
       workflow_state = hash['workflow_state']
       user_message = hash['user_message']
       time_window = EntitiesTimeWindowResponse.from_hash(hash['time_window']) if hash['time_window']
+      resource_id = hash['resource_id']
+      service_id = hash['service_id']
 
       # Create object from extracted values
       EntitiesBookingResponse.new(id,
                                   owner_id,
                                   workflow_state,
                                   user_message,
-                                  time_window)
+                                  time_window,
+                                  resource_id,
+                                  service_id)
     end
   end
 end

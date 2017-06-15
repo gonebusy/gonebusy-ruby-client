@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2017-06-14 ##
+### Changed
+- [#13](https://github.com/gonebusy/gonebusy-nodejs-client/pull/13) - Booking item response now includes :resource_id and :service_id corresponding to Resource providing the Booking and the Service being performed.
+
 ## [0.1.1] - 2017-05-25 ##
 ### Changed
 - [#12](https://github.com/gonebusy/gonebusy-nodejs-client/pull/12) - POST /bookings/new :user_id is now a required parameter.
