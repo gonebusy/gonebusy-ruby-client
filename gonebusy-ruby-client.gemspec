@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'gonebusy-ruby-client'
-  s.version     = '0.1.1'
+  s.version     = '0.1.2'
   s.summary     = 'GoneBusy API Ruby client'
   s.description = 'This is a Ruby client for communicating with the full GoneBusy API'
   s.authors     = ["Alex Agranov"]
