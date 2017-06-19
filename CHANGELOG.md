@@ -1,16 +1,24 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2017-06-18 ##
+### Added
+- [#14](https://github.com/gonebusy/gonebusy-ruby-client/pull/14) - Booking creation/update now accept optional :name and :description
+- [#14](https://github.com/gonebusy/gonebusy-ruby-client/pull/14) - Booking item response now contains :name, :description, :external_link, :collaborative_link
+
+### Changed
+- [#14](https://github.com/gonebusy/gonebusy-ruby-client/pull/14) - Booking :user_message has been replaced by separate :name and :description
+
 ## [0.1.2] - 2017-06-14 ##
 ### Changed
-- [#13](https://github.com/gonebusy/gonebusy-nodejs-client/pull/13) - Booking item response now includes :resource_id and :service_id corresponding to Resource providing the Booking and the Service being performed.
+- [#13](https://github.com/gonebusy/gonebusy-ruby-client/pull/13) - Booking item response now includes :resource_id and :service_id corresponding to Resource providing the Booking and the Service being performed.
 
 ## [0.1.1] - 2017-05-25 ##
 ### Changed
-- [#12](https://github.com/gonebusy/gonebusy-nodejs-client/pull/12) - POST /bookings/new :user_id is now a required parameter.
+- [#12](https://github.com/gonebusy/gonebusy-ruby-client/pull/12) - POST /bookings/new :user_id is now a required parameter.
 
 ### Added
-- [#12](https://github.com/gonebusy/gonebusy-nodejs-client/pull/12) - GET /bookings now supports optional :booker_id parameter to filter retrieved bookings to those made on behalf of :booker_id.
+- [#12](https://github.com/gonebusy/gonebusy-ruby-client/pull/12) - GET /bookings now supports optional :booker_id parameter to filter retrieved bookings to those made on behalf of :booker_id.
 
 ## [0.1.0] - 2017-05-09 ##
 ### NOTE - This version introduces breaking changes and additions listed below.
